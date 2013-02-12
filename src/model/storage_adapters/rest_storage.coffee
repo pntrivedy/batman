@@ -117,6 +117,9 @@ class Batman.RestStorage extends Batman.StorageAdapter
     @_addUrlAffixes(@_addParams(url, env.options), model, env)
 
   request: (env, next) ->
+    if env.action in ['create', 'update'] && env.subject._batman.useIframeUpload
+      return @iframeUpload(env, next)
+
     options = Batman.extend env.options,
       autosend: false
       success: (data) -> env.data = data
@@ -127,6 +130,9 @@ class Batman.RestStorage extends Batman.StorageAdapter
 
     env.request = new Batman.Request(options)
     env.request.send()
+
+  iframeUpload: (env, next) ->
+    console.log 'iframeUpload', env, next
 
   perform: (key, record, options, callback) ->
     options ||= {}

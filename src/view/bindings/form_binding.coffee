@@ -32,6 +32,9 @@ class Batman.DOM.FormBinding extends Batman.DOM.AbstractAttributeBinding
     model = @renderContext.get(@contextName)
     model._batman.saveWithForm = @get('node')
 
+    # We need to unset "saveWithForm" when the FileBinding is destroyed
+    # @todo
+
   setupErrorsList: ->
     if @errorsListNode = Batman.DOM.querySelector(@get('node'), @get('errorsListSelector'))
       Batman.DOM.setInnerHTML @errorsListNode, @errorsListHTML()

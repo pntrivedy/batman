@@ -117,7 +117,7 @@ class Batman.RestStorage extends Batman.StorageAdapter
     @_addUrlAffixes(@_addParams(url, env.options), model, env)
 
   request: (env, next) ->
-    if env.action in ['create', 'update'] && env.subject._batman.useIframeUpload
+    if env.action in ['create', 'update'] && env.subject._batman.saveWithForm
       return @iframeUpload(env, next)
 
     options = Batman.extend env.options,
@@ -132,7 +132,25 @@ class Batman.RestStorage extends Batman.StorageAdapter
     env.request.send()
 
   iframeUpload: (env, next) ->
-    console.log 'iframeUpload', env, next
+    # Dynamically create an IFRAME for this request
+    # that has a random ID
+    # @TODO
+
+    form = env.subject._batman.saveWithForm
+    form.setAttribute('method', 'POST')
+    form.setAttribute('enctype', 'multipart/form-data')
+    form.setAttribute('action', env.options.url)
+    form.setAttribute('target', 'iframe_id')
+
+    # If this isn't a POST action we will need to create a hidden input
+    # with _method = METHOD
+    # @TODO
+
+    # Bind to iframe's load event
+    # @TODO
+
+    # Submit the form
+    form.submit()
 
   perform: (key, record, options, callback) ->
     options ||= {}

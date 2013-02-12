@@ -28,20 +28,9 @@ class Batman.DOM.FormBinding extends Batman.DOM.AbstractAttributeBinding
         definition = new Batman.DOM.AttrReaderBindingDefinition(node, @errorClass, @get('keyPath') + " | get 'errors.#{field}.length'", @renderContext, @renderer)
         new Batman.DOM.AddClassBinding(definition)
 
-  setupUploadPolyfill: (fileBinding) ->
+  setupUploadPolyfill: ->
     model = @renderContext.get(@contextName)
-    model._batman.useIframeUpload = true
-
-    @setupForm @get('node')
-
-  setupForm: ->
-    model = @renderContext.get(@contextName)
-
-    form = @get('node')
-    form.setAttribute('method', 'POST')
-    form.setAttribute('enctype', 'multipart/form-data')
-    form.setAttribute('target', 'ie_upload_iframe')
-  # form.setAttribute('action', 'url to model')
+    model._batman.saveWithForm = @get('node')
 
   setupErrorsList: ->
     if @errorsListNode = Batman.DOM.querySelector(@get('node'), @get('errorsListSelector'))

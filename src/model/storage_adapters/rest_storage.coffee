@@ -175,7 +175,7 @@ class Batman.RestStorage extends Batman.StorageAdapter
       value = data[key]
 
       namespaceKey = if Batman.typeOf(data) == 'Array'
-        '[]'
+        ''
       else
         key
 

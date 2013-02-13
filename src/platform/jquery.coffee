@@ -1,6 +1,6 @@
 Batman.extend Batman.DOM,
   querySelectorAll: (node, selector) -> jQuery(selector, node)
-  querySelector: (node, selector) -> jQuery(selector, node)[0]
+  querySelector: (node, selector) -> jQuery(selector, node)?[0]
   setInnerHTML: (node, html) ->
     childNodes = (child for child in node.childNodes)
     Batman.DOM.willRemoveNode(child) for child in childNodes

@@ -6,6 +6,8 @@ class Batman.DOM.FormBinding extends Batman.DOM.AbstractAttributeBinding
   defaultErrorsListSelector: 'div.errors'
   onlyObserve: Batman.BindingDefinitionOnlyObserve.None
 
+  childFileBindings: []
+
   @accessor 'errorsListSelector', ->
     @get('node').getAttribute('data-errors-list') || @defaultErrorsListSelector
 
@@ -21,6 +23,7 @@ class Batman.DOM.FormBinding extends Batman.DOM.AbstractAttributeBinding
     if binding.isInputBinding && Batman.isChildOf(@get('node'), binding.get('node'))
       if ~(index = binding.get('key').indexOf(@contextName)) # If the binding is to a key on the thing passed to formfor
         if binding instanceof Batman.DOM.FileBinding# && !!window.FileReader
+          @childFileBindings.push(binding)
           @setupUploadPolyfill(binding)
 
         node = binding.get('node')
@@ -30,7 +33,7 @@ class Batman.DOM.FormBinding extends Batman.DOM.AbstractAttributeBinding
 
   setupUploadPolyfill: ->
     model = @renderContext.get(@contextName)
-    model._batman.saveWithForm = @get('node')
+    model._batman.saveWithForm = this
 
     # We need to unset "saveWithForm" when the FileBinding is destroyed
     # @todo

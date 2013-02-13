@@ -136,11 +136,29 @@ class Batman.RestStorage extends Batman.StorageAdapter
     # that has a random ID
     # @TODO
 
-    form = env.subject._batman.saveWithForm
+    # Setup the form
+    form = env.subject._batman.saveWithForm.get('node')
     form.setAttribute('method', 'POST')
     form.setAttribute('enctype', 'multipart/form-data')
     form.setAttribute('action', env.options.url)
     form.setAttribute('target', 'iframe_id')
+
+    # Cleanup any previous field containers
+    for node in Batman.DOM.querySelectorAll(form, '.iframe_upload_fields')
+      Batman.DOM.removeNode(node)
+
+    # Create a container for the fields
+    fieldsContainer = document.createElement('div')
+    fieldsContainer.setAttribute('class', 'iframe_upload_fields')
+    form.appendChild(fieldsContainer)
+
+    # Add hidden fields for inputs
+    @createInputs(fieldsContainer, env.options.data)
+
+    # Add authenticity token
+    csrfParam = Batman.DOM.querySelector(null, 'meta[name="csrf-param"]')
+    csrfToken = Batman.DOM.querySelector(null, 'meta[name="csrf-token"]')
+    @createInput(fieldsContainer, csrfParam.getAttribute('content'), csrfToken.getAttribute('content'))
 
     # If this isn't a POST action we will need to create a hidden input
     # with _method = METHOD
@@ -151,6 +169,30 @@ class Batman.RestStorage extends Batman.StorageAdapter
 
     # Submit the form
     form.submit()
+
+  createInputs: (form, data, namespace = '') ->
+    for key of data
+      value = data[key]
+
+      nextNamespace = if namespace == ''
+        key
+      else
+        namespace + "[#{key}]"
+
+      if Batman.typeOf(value) == 'Array'
+        @createInputs(form, value, nextNamespace)
+      else if Batman.typeOf(value) == 'Object'
+        @createInputs(form, value, nextNamespace)
+      else
+        @createInput(form, nextNamespace, value)
+
+  createInput: (form, name, value) ->
+    input = document.createElement('input')
+
+    input.setAttribute('type', 'text')
+    input.setAttribute('name', name)
+    input.setAttribute('value', value)
+    form.appendChild(input)
 
   perform: (key, record, options, callback) ->
     options ||= {}

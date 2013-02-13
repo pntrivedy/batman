@@ -118,6 +118,7 @@ class Batman.RestStorage extends Batman.StorageAdapter
 
   request: (env, next) ->
     if env.action in ['create', 'update'] && env.subject._batman.saveWithForm
+      console.log ' with iframe'
       return @iframeUpload(env, next)
 
     options = Batman.extend env.options,
@@ -138,6 +139,7 @@ class Batman.RestStorage extends Batman.StorageAdapter
     iframe = document.createElement('iframe')
     iframe.setAttribute('src', '/admin/iframe_bridge') # @TODO shouldn't be hardcoded
     iframe.setAttribute('id', 'some_random_id') # @TODO
+    iframe.setAttribute('name', 'some_random_id') # @TODO
     form.appendChild(iframe)
 
     # Bind to IFRAME
@@ -149,10 +151,11 @@ class Batman.RestStorage extends Batman.StorageAdapter
       method = 'addEventListener'
 
     iframe[method] event, ->
-      return if @contentWindow.location.pathname == '/admin/iframe_bridge' # @TODO shouldn't be hardcoded
+      return if iframe.contentWindow.location.pathname == '/admin/iframe_bridge' # @TODO shouldn't be hardcoded
 
-      data = @contentWindow.document.body.innerText
+      data = iframe.contentWindow.document.body.innerText
 
+      console.log 'iframe loaded with ', data.length
       env.data = JSON.parse(data)
       next()
 
@@ -178,6 +181,9 @@ class Batman.RestStorage extends Batman.StorageAdapter
     csrfParam = Batman.DOM.querySelector(null, 'meta[name="csrf-param"]')
     csrfToken = Batman.DOM.querySelector(null, 'meta[name="csrf-token"]')
     @createInput(fieldsContainer, csrfParam.getAttribute('content'), csrfToken.getAttribute('content'))
+
+    # Add input so back-end does not send back Content-Type: text/json
+    @createInput(fieldsContainer, '_withIframe', '1')
 
     # If this isn't a POST action we will need to create a hidden input
     # with _method = METHOD

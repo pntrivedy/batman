@@ -33,6 +33,9 @@ class Batman.DOM.FormBinding extends Batman.DOM.AbstractAttributeBinding
 
   setupUploadPolyfill: ->
     model = @renderContext.get(@contextName)
+
+    return if model._batman.saveWithForm
+    console.log 'setupUploadPolyfill'
     model._batman.saveWithForm = this
 
     # We need to unset "saveWithForm" when the FileBinding is destroyed

@@ -132,16 +132,35 @@ class Batman.RestStorage extends Batman.StorageAdapter
     env.request.send()
 
   iframeUpload: (env, next) ->
-    # Dynamically create an IFRAME for this request
-    # that has a random ID
-    # @TODO
+    form = env.subject._batman.saveWithForm.get('node')
+
+    # Create IFRAME
+    iframe = document.createElement('iframe')
+    iframe.setAttribute('src', '/admin/iframe_bridge') # @TODO shouldn't be hardcoded
+    iframe.setAttribute('id', 'some_random_id') # @TODO
+    form.appendChild(iframe)
+
+    # Bind to IFRAME
+    if window.attachEvent # IE8
+      event = 'onload'
+      method = 'attachEvent'
+    else
+      event = 'load'
+      method = 'addEventListener'
+
+    iframe[method] event, ->
+      return if @contentWindow.location.pathname == '/admin/iframe_bridge' # @TODO shouldn't be hardcoded
+
+      data = @contentWindow.document.body.innerText
+
+      env.data = JSON.parse(data)
+      next()
 
     # Setup the form
-    form = env.subject._batman.saveWithForm.get('node')
     form.setAttribute('method', 'POST')
     form.setAttribute('enctype', 'multipart/form-data')
     form.setAttribute('action', env.options.url)
-    form.setAttribute('target', 'iframe_id')
+    form.setAttribute('target', 'some_random_id') # @TODO
 
     # Cleanup any previous field containers
     for node in Batman.DOM.querySelectorAll(form, '.iframe_upload_fields')
@@ -162,9 +181,6 @@ class Batman.RestStorage extends Batman.StorageAdapter
 
     # If this isn't a POST action we will need to create a hidden input
     # with _method = METHOD
-    # @TODO
-
-    # Bind to iframe's load event
     # @TODO
 
     # Submit the form

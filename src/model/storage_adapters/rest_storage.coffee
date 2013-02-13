@@ -174,10 +174,15 @@ class Batman.RestStorage extends Batman.StorageAdapter
     for key of data
       value = data[key]
 
-      nextNamespace = if namespace == ''
-        key
+      namespaceKey = if Batman.typeOf(data) == 'Array'
+        '[]'
       else
-        namespace + "[#{key}]"
+        key
+
+      nextNamespace = if namespace == ''
+        namespaceKey
+      else
+        namespace + "[#{namespaceKey}]"
 
       if Batman.typeOf(value) == 'Array'
         @createInputs(form, value, nextNamespace)

@@ -124,9 +124,10 @@ class Batman.RestStorage extends Batman.StorageAdapter
     options = Batman.extend env.options,
       autosend: false
       success: (data) -> env.data = data
-      error: (error) -> env.error = error
+      error: (error) -> console.log 'error', error; env.error = error
       loaded: ->
         env.response = env.request.get('response')
+        #console.log 'response', env.response
         next()
 
     env.request = new Batman.Request(options)
@@ -140,6 +141,7 @@ class Batman.RestStorage extends Batman.StorageAdapter
     iframe.setAttribute('src', '/admin/iframe_bridge') # @TODO shouldn't be hardcoded
     iframe.setAttribute('id', 'some_random_id') # @TODO
     iframe.setAttribute('name', 'some_random_id') # @TODO
+    iframe.setAttribute('style', 'display: none;') # @TODO Hide them
     form.appendChild(iframe)
 
     # Bind to IFRAME
@@ -156,7 +158,20 @@ class Batman.RestStorage extends Batman.StorageAdapter
       data = iframe.contentWindow.document.body.innerText
 
       console.log 'iframe loaded with ', data.length
-      env.data = JSON.parse(data)
+      parsedData = JSON.parse(data)
+
+      if parsedData && parsedData.errors
+        # @TODO Need to process errors correctly.
+        # env.error = data
+        # env.response = parsedData
+      else
+        env.data = parsedData
+
+      # Remove events
+      # @TODO
+      # Destroy the iframe node
+      # @TODO
+
       next()
 
     # Setup the form
@@ -185,9 +200,13 @@ class Batman.RestStorage extends Batman.StorageAdapter
     # Add input so back-end does not send back Content-Type: text/json
     @createInput(fieldsContainer, '_withIframe', '1')
 
+    # Create a hidden input with API headers since we can't pass them
+    # @TODO
+
     # If this isn't a POST action we will need to create a hidden input
     # with _method = METHOD
-    # @TODO
+    if env.options.method != 'POST'
+      @createInput(fieldsContainer, '_method', env.options.method)
 
     # Submit the form
     form.submit()
@@ -214,6 +233,7 @@ class Batman.RestStorage extends Batman.StorageAdapter
         @createInput(form, nextNamespace, value)
 
   createInput: (form, name, value) ->
+    return if File && value instanceof File # @TODO Remove this, it's just for testing in Chrome
     input = document.createElement('input')
 
     input.setAttribute('type', 'text')

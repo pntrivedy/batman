@@ -31,9 +31,13 @@ asyncTest "hasOne associations are loaded and custom url is used", 2, ->
       equal associationSpy.callCount, 1
 
 asyncTest "hasOne associations are loaded via ID", 2, ->
+  console.log "hasMany -- before find"
   @Store.find 1, (err, store) =>
+    console.log "hasMany -- after find"
     product = store.get 'product'
+    console.log "hasMany -- before delay"
     delay ->
+      console.log "hasMany -- after delay"
       equal product.get('id'), 1
       equal product.get('name'), 'Product One'
 

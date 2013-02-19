@@ -565,15 +565,21 @@ asyncTest "hasMany loads records for each parent instance", 2, ->
     id: 4
     store_id: 2
 
+  console.log "hasMany -- before find (1)"
   @Store.find 1, (err, store) =>
+    console.log "hasMany -- after find (1)"
     throw err if err
     products = store.get('products')
     setTimeout =>
       equal products.length, 3
+      console.log "hasMany -- before find (2)"
       @Store.find 2, (err, store2) =>
+        console.log "hasMany -- after find (2)"
         throw err if err
         products2 = store2.get('products')
+        console.log "hasMany -- before delay"
         delay =>
+          console.log "hasMany -- after delay"
           equal products2.length, 1
     , ASYNC_TEST_DELAY
 

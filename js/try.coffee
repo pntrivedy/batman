@@ -109,14 +109,14 @@ class Try.CodeStep extends Try.Step
 class Try.GemfileStep extends Try.CodeStep
 	heading: "Welcome to Batman!"
 	body: "Let's build an app. We've created a brand new Rails app for you."
-	task: "Start off by adding `batman-rails` to your gemfile."
+	task: "Start off by adding `batman-rails` to your gemfile, and press Cmd+S when you're done."
 
 	@expect /gem\s*[\"|\']batman\-rails[\"|\']/, in: 'Gemfile'
 
 class Try.GenerateAppStep extends Try.ConsoleStep
 	heading: "Great! We've run `bundle install` for you."
 	body: "Now, let's create a new batman application inside your rails app."
-	task: "Run `rails generate batman:app` from the console."
+	task: "Run `rails generate batman:app` from the console, and press enter to submit the command."
 
 	@expect /rails\s*[g|generate]\s*batman:app/
 

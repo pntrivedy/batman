@@ -70,104 +70,31 @@ batman.js >
 
 <div class="alt-row">
   <div class="wrapper">
-    <div class="row clearfix">
+    <div class="row clearfix overview">
 
       <div class="span8 ppr">
 
-        <i class="icn icn-ruby fr ssl"></i>
         <h3 class="heading ssb">Love Rails?<br />You'll love Batman.js</h3>
-        <p>If you know Rails, then you'll be up and running with Batman in minutes. Batman.js was built with Rails development specifically in mind allowing you to save time and use less code.</p>
+        <i class="icn icn-ruby sb fr"></i>
+        <p>If you know Rails, then you'll be up and running with Batman in minutes. Batman.js was built with Rails development in mind, allowing you to save time and use less code.</p>
       </div>
 
       <div class="span8">
-        <h3 class="heading ssb">Serious Scalability.</h3>
-        <p>Building the next (insert trendy website/app)? Batman was created with scalability in mind and currently powers Shopify. In other words, your project will never outgrow Batman.</p>
+        <h3 class="heading ssb">Serious Scalability.<br />Batman rulz.</h3>
+        <i class="icn icn-scale sb fr"></i>
+        <p>Building the next [insert trendy website/app]? Batman was created with scalability in mind and currently powers Shopify. In other words, your project will never outgrow Batman.</p>
       </div>
 
       <div class="span8 ppl">
-        <h3 class="heading ssb">Made for Developers and Designers</h3>
-        <p>The Batman.js API is designed with developer and designer happiness as its first priority. (how?)</p>
+        <h3 class="heading ssb">Easy to use for<br />developers &amp; designers.</h3>
+        <i class="icn icn-heart sb fr"></i>
+        <p>Batman.js is designed with developer &amp; designer happiness as a top priority.</p>
+        <ul class="bat-list">
+          <li>Data bindings</li>
+          <li>Liquid-style filter syntax</li>
+        </ul>
       </div>
 
     </div>
   </div>
 </div>
-
-<!-- Begin content-column-wrapper
-<div id="content-column-wrapper">
-  <div>
-    <h2>Here's some code:</h2>
-{% highlight coffeescript %}
-class window.Shopify extends Batman.App
-  @resources 'products'
-  @root 'products#index'
-
-class Shopify.Product extends Batman.Model
-  @persist Batman.RestStorage
-
-class Shopify.ProductsController extends Batman.Controller
-  index: ->
-    @products = Shopify.Product.get('all')
-
-  show: (params) ->
-    @product = Shopify.Product.find(params.id)
-{% endhighlight %}
-
-  <h4>views/products/index.html</h4>
-{% highlight html %}
-<ul id="products">
-  <li data-foreach-product="products">
-    <a data-route="product" data-bind="product.name">this text will be replaced with product.name</a>
-  </li>
-
-  <li>
-    <span data-bind="'products' | pluralize products.length"></span>
-  </li>
-</ul>
-{% endhighlight %}
-  </div>
-
-  <h3>Ready for more?</h3>
-  <h2><a href="/download.html">Get started</a> now or read<br />
-  through some <a href="/examples.html">examples</a>.</h2>
-</div>
-
-
-
-<div id="right-sidebar">
-
-<h3><a href="#" class="icon-rss">RSS Feed</a>From the Blog</h3>
-
-{% assign post = site.posts.first %}
-<ul class="blog-list">
-  <li><a href="{{ post.url }}"><h5>{{ post.title }}</h5></a></li>
-  <li class="blog-post-date">Posted {{ post.date | date_to_long_string }} by {{ post.author }}</li>
-  <li>
-    <p style="text-align:justify">{{ post.content | truncatewords: 50 }}<a href="{{ post.url }}" class="read-more">Read More</a></p>
-  </li>
-</ul>
-
-<h3><a href="#" class="icon-twitter">Follow us on Twitter</a>From Twitter</h3>
-<div class="tweet"></div>
-
-</div><div style="clear:both;"></div>
-
-
-<script type="text/javascript">
-// Begin jquery tweet //
-$(document).ready(function(){
-    $(".tweet").tweet({
-        join_text: "auto",
-        count: 3,
-        query: "batmanjs",
-        auto_join_text_default: "",
-        auto_join_text_ed: "",
-        auto_join_text_ing: "",
-        auto_join_text_reply: "",
-        auto_join_text_url: "",
-        loading_text: "loading tweets..."
-    });
-});
-</script>
-
--->

@@ -106,13 +106,17 @@
                 return _this.save();
               }
             };
-            _this.node = $('<div></div>');
+            _this.node = $('<div style="height:100%"></div>');
             _this.cm = CodeMirror(_this.node[0], {
               theme: 'solarized',
               mode: mode,
               lineNumbers: true,
               extraKeys: keys
             });
+            _this.cm.getWrapperElement().style.height = "100%";
+            setTimeout(function() {
+              return _this.cm.refresh();
+            }, 0);
           }
           _this.cm.setValue(_this.get('content') || '');
           return $('#code-editor').html('').append(_this.node);

@@ -326,9 +326,13 @@ div[class*="span"] {
 }
 .code-header {
   height: 30px;
-  background: #A4A4AE;
+  background: #A4A4AE url(../images/window-controls.png) no-repeat 8px 8px;
   color: #000;
-  border-radius: 4px 4px 0 0;
+  border-radius: 4px 4px 0 0; 
+}
+.code-header h3 {
+  font-size: 18px;
+  padding-top: 4px;
 }
 .code-editor-browser {
   width: 293px;

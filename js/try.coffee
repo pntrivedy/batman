@@ -23,6 +23,9 @@ class Try.LayoutView extends Batman.View
 			@set 'currentFile', file
 			file.show()
 
+	previewApp: ->
+		window.open('/preview', "app_preview", "width=400,height=600")
+
 class Try.File extends Batman.Model
 	@storageKey: 'app_files'
 	@resourceName: 'app_files'

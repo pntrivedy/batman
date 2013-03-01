@@ -54,6 +54,10 @@
       }
     };
 
+    LayoutView.prototype.previewApp = function() {
+      return window.open('/preview');
+    };
+
     return LayoutView;
 
   })(Batman.View);

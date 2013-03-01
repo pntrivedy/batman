@@ -20,33 +20,7 @@ use_intro: true
           </div>
           <div class="code-editor-browser">
             <ul>
-              <li><a href="#">rdio</a>
-                <ul>
-                  <li><a href="#">app</a>
-                    <ul>
-                      <li>controllers</li>
-                      <li><a href="#">assets</a>
-                        <ul>
-                          <li><a href="#">batman</a>
-                            <ul>
-                              <li>controllers</li>
-                              <li><a href="#">html</a>
-                                <ul>
-                                  <li><a href="#">artists</a>
-                                    <ul>
-                                      <li>index.html</li>
-                                    </ul>
-                                  </li>
-                                </ul>
-                              </li>
-                            </ul>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </li>
-                </ul>
-              </li>
+              <li data-foreach-file="files"><div data-view="FileView"></div></li>
             </ul>
           </div>
           <div class="code-editor-text">

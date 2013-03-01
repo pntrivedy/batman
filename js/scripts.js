@@ -8,10 +8,6 @@ $(document).ready(function() {
         }
     });
 
-    $(".code-editor-browser ul li a").click(function(){
-        $(this).next('ul').slideToggle(250);
-    });
-
     $(".code-editor").hover(function(){
         if(!$('.intro').hasClass('expanded')) {
             $(".intro").css({height:402});

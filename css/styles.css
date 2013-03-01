@@ -319,6 +319,23 @@ div[class*="span"] {
   line-height: 20px;
 }
 
+.code-editor-browser .file {
+  text-decoration: none;
+}
+
+.code-editor-browser .directory {
+  font-weight: bold;
+  text-decoration: underline;
+}
+
+.code-editor-browser .directory ul {
+  display:none;
+}
+
+.code-editor-browser .directory.expanded ul {
+  display:block;
+}
+
 .code-editor-text {
   background: #CCCCD9;
   width: 607px;

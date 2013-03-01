@@ -23,14 +23,14 @@ class Try.LayoutView extends Batman.View
 			@set 'currentFile', file
 			file.show()
 
-	@accessor 'currentStep', ->
-		Try.get('steps.first')
-
 class Try.File extends Batman.Model
 	@storageKey: 'app_files'
 	@resourceName: 'app_files'
 
 	@persist Batman.RailsStorage
+
+	@findByName: (name) ->
+		@get('loaded.indexedBy.name').get(name).get('first')
 
 	@encode 'name', 'content', 'isDirectory'
 	@encode 'children',
@@ -49,13 +49,17 @@ class Try.File extends Batman.Model
 				@fromJSON(data)
 
 				if !@cm
-					@node = $('<div></div>')
 					mode = if @get('name').indexOf('.coffee') != -1 then 'coffeescript' else 'ruby'
-					console.log mode
-					@cm = CodeMirror(@node[0], theme: 'solarized', mode: mode, lineNumbers: true)
+					keys = {'Cmd-S': => @save() }
+
+					@node = $('<div></div>')
+					@cm = CodeMirror(@node[0], theme: 'solarized', mode: mode, lineNumbers: true, extraKeys: keys)
 
 				@cm.setValue(@get('content') || '')
 				$('#code-editor').html('').append(@node)
+
+	save: ->
+		@set('value', @cm.getValue())
 
 class Try.FileView extends Batman.View
 	html: """
@@ -68,27 +72,60 @@ class Try.FileView extends Batman.View
 	"""
 
 class Try.Step extends Batman.Object
+	activate: ->
+		Try.set('currentStep', this)
+		@start()
+
+	start: ->
+
+	next: ->
+		array = steps.toArray()
+		index = array.indexOf(this)
+		array[index + 1].activate()
+
 
 class Try.ConsoleStep extends Try.Step
 	isConsole: true
 
+	start: ->
+
+	@expect: (regex) ->
+		this::regex = regex
+
 class Try.CodeStep extends Try.Step
 	isCode: true
 
+	start: ->
+		if filename = @options?.in
+			file = Try.File.findByName(filename)
+			file.observe 'value', (value) =>
+				if @regex.test(value)
+					@next()
+
 	@expect: (regex, options) ->
+		this::regex = regex
+		this::options = options
 
-
-class Try.InitializeAppStep extends Try.CodeStep
+class Try.GemfileStep extends Try.CodeStep
 	heading: "Welcome to Batman!"
 	body: "Let's build an app. We've created a brand new Rails app for you."
 	task: "Start off by adding `batman-rails` to your gemfile."
 
-	@expect /gem\w[\"\']batman\-rails[\"\']/, in: 'Gemfile'
+	@expect /gem\s*[\"|\']batman\-rails[\"|\']/, in: 'Gemfile'
+
+class Try.GenerateAppStep extends Try.ConsoleStep
+	heading: "Great! We've run `bundle install` for you."
+	body: "Now, let's create a new batman application inside your rails app."
+	task: "Run `rails generate batman:app` from the console."
+
+	@expect /rails\s*[g|generate]\s*batman:app/
 
 steps = new Batman.Set(
-	new Try.InitializeAppStep
+	new Try.GemfileStep
+	new Try.GenerateAppStep
 )
 
 Try.set('steps', steps)
-
-Try.run()
+Try.File.load ->
+	Try.run()
+	steps.get('first').activate()

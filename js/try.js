@@ -54,10 +54,6 @@
       }
     };
 
-    LayoutView.accessor('currentStep', function() {
-      return Try.get('steps.first');
-    });
-
     return LayoutView;
 
   })(Batman.View);
@@ -75,6 +71,10 @@
     File.resourceName = 'app_files';
 
     File.persist(Batman.RailsStorage);
+
+    File.findByName = function(name) {
+      return this.get('loaded.indexedBy.name').get(name).get('first');
+    };
 
     File.encode('name', 'content', 'isDirectory');
 
@@ -97,22 +97,31 @@
       return new Batman.Request({
         url: "/app_files/1.json?path=" + (this.get('id')),
         success: function(data) {
-          var mode;
+          var keys, mode;
           _this.fromJSON(data);
           if (!_this.cm) {
-            _this.node = $('<div></div>');
             mode = _this.get('name').indexOf('.coffee') !== -1 ? 'coffeescript' : 'ruby';
-            console.log(mode);
+            keys = {
+              'Cmd-S': function() {
+                return _this.save();
+              }
+            };
+            _this.node = $('<div></div>');
             _this.cm = CodeMirror(_this.node[0], {
               theme: 'solarized',
               mode: mode,
-              lineNumbers: true
+              lineNumbers: true,
+              extraKeys: keys
             });
           }
           _this.cm.setValue(_this.get('content') || '');
           return $('#code-editor').html('').append(_this.node);
         }
       });
+    };
+
+    File.prototype.save = function() {
+      return this.set('value', this.cm.getValue());
     };
 
     return File;
@@ -141,6 +150,20 @@
       return Step.__super__.constructor.apply(this, arguments);
     }
 
+    Step.prototype.activate = function() {
+      Try.set('currentStep', this);
+      return this.start();
+    };
+
+    Step.prototype.start = function() {};
+
+    Step.prototype.next = function() {
+      var array, index;
+      array = steps.toArray();
+      index = array.indexOf(this);
+      return array[index + 1].activate();
+    };
+
     return Step;
 
   })(Batman.Object);
@@ -154,6 +177,12 @@
     }
 
     ConsoleStep.prototype.isConsole = true;
+
+    ConsoleStep.prototype.start = function() {};
+
+    ConsoleStep.expect = function(regex) {
+      return this.prototype.regex = regex;
+    };
 
     return ConsoleStep;
 
@@ -169,38 +198,77 @@
 
     CodeStep.prototype.isCode = true;
 
-    CodeStep.expect = function(regex, options) {};
+    CodeStep.prototype.start = function() {
+      var file, filename, _ref,
+        _this = this;
+      if (filename = (_ref = this.options) != null ? _ref["in"] : void 0) {
+        file = Try.File.findByName(filename);
+        return file.observe('value', function(value) {
+          if (_this.regex.test(value)) {
+            return _this.next();
+          }
+        });
+      }
+    };
+
+    CodeStep.expect = function(regex, options) {
+      this.prototype.regex = regex;
+      return this.prototype.options = options;
+    };
 
     return CodeStep;
 
   })(Try.Step);
 
-  Try.InitializeAppStep = (function(_super) {
+  Try.GemfileStep = (function(_super) {
 
-    __extends(InitializeAppStep, _super);
+    __extends(GemfileStep, _super);
 
-    function InitializeAppStep() {
-      return InitializeAppStep.__super__.constructor.apply(this, arguments);
+    function GemfileStep() {
+      return GemfileStep.__super__.constructor.apply(this, arguments);
     }
 
-    InitializeAppStep.prototype.heading = "Welcome to Batman!";
+    GemfileStep.prototype.heading = "Welcome to Batman!";
 
-    InitializeAppStep.prototype.body = "Let's build an app. We've created a brand new Rails app for you.";
+    GemfileStep.prototype.body = "Let's build an app. We've created a brand new Rails app for you.";
 
-    InitializeAppStep.prototype.task = "Start off by adding `batman-rails` to your gemfile.";
+    GemfileStep.prototype.task = "Start off by adding `batman-rails` to your gemfile.";
 
-    InitializeAppStep.expect(/gem\w[\"\']batman\-rails[\"\']/, {
+    GemfileStep.expect(/gem\s*[\"|\']batman\-rails[\"|\']/, {
       "in": 'Gemfile'
     });
 
-    return InitializeAppStep;
+    return GemfileStep;
 
   })(Try.CodeStep);
 
-  steps = new Batman.Set(new Try.InitializeAppStep);
+  Try.GenerateAppStep = (function(_super) {
+
+    __extends(GenerateAppStep, _super);
+
+    function GenerateAppStep() {
+      return GenerateAppStep.__super__.constructor.apply(this, arguments);
+    }
+
+    GenerateAppStep.prototype.heading = "Great! We've run `bundle install` for you.";
+
+    GenerateAppStep.prototype.body = "Now, let's create a new batman application inside your rails app.";
+
+    GenerateAppStep.prototype.task = "Run `rails generate batman:app` from the console.";
+
+    GenerateAppStep.expect(/rails\s*[g|generate]\s*batman:app/);
+
+    return GenerateAppStep;
+
+  })(Try.ConsoleStep);
+
+  steps = new Batman.Set(new Try.GemfileStep, new Try.GenerateAppStep);
 
   Try.set('steps', steps);
 
-  Try.run();
+  Try.File.load(function() {
+    Try.run();
+    return steps.get('first').activate();
+  });
 
 }).call(this);

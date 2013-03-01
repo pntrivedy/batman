@@ -67,7 +67,7 @@ div[class*="span"] {
 .alt-row, .plain-row { color: #171722; }
 
 .alt-row a, .plain-row a { color: #323264; }
-.alt-row a:hover, .plain-row a:hover { color: #181874;}
+.alt-row a:hover, .plain-row a:hover { color: #3f3f9e;}
 
 /* helpers */
 .clearfix:before,.clearfix:after{content:"\0020";display:block;height:0;visibility:hidden}.clearfix:after{clear:both}.clearfix{zoom:1}
@@ -78,10 +78,12 @@ div[class*="span"] {
 .ppr { padding-right: 20px; }
 .ppl { padding-left: 20px; }
 .ppb { padding-bottom: 20px; }
+.p-none { padding: 0; }
 
 .sb{ margin-bottom: 10px; }
 .ssb{ margin-bottom: 20px; }
 .ssl{ margin-left: 20px; }
+.s-none { margin: 0; }
 
 .fl { float: left; }
 .fr { float: right; }
@@ -93,7 +95,7 @@ div[class*="span"] {
 .divider-top { border-top: solid 1px #e8e8fc; margin-top: 15px; padding-top: 15px; }
 .divider { border-bottom: solid 1px #e8e8fc; margin-bottom: 15px; padding-bottom: 15px; }
 
-.small { font-size: 11px; }
+.small { font-size: 12px; }
 
 /* icon font */
 @font-face {
@@ -344,7 +346,32 @@ div[class*="span"] {
 /* homepage > demo feature */
 .demo .files { width: 150px; padding: 15px; }
 
-/* homepage > tweet */
+
+/* footer */
+.footer{
+  font-size: 12px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+.footer .ico {
+  font-size: 24px;
+  float: right;
+  margin-top: 4px;
+  margin-left: 15px;
+  text-decoration: none;
+  color: #5c5c6e;
+  -webkit-transition: all 0.15s ease;
+  -moz-transition:    all 0.15s ease;
+  -ms-transition:     all 0.15s ease;
+  -o-transition:      all 0.15s ease;
+  transition:         all 0.15s ease;
+}
+.footer .ico:hover {
+  color: #a2a1ba;
+}
+
+
+/* footer > tweet */
 .tweet {
   font-size: 12px;
 }
@@ -382,27 +409,46 @@ div[class*="span"] {
 .tweet_time a, .tweet_user { text-decoration: none; }
 .tweet_time a:hover, .tweet_user:hover { text-decoration: underline; }
 
-/* footer */
-.footer{
-  font-size: 12px;
-  padding-top: 50px;
-  padding-bottom: 50px;
+
+/* footer > mailing list */
+.mailing-list input{
+  padding: 6px;
+  border: solid 1px #ddd;
+  font-size: 16px;
+  box-sizing: border-box;
+  font-family: ProximaNovaRegular;
+  height: 32px;
+  line-height: 32px;
+  padding: 0;
 }
-.footer .ico {
-  font-size: 24px;
+.mailinglist form { overflow: hidden; }
+.mailing-list .email-submit {
   float: right;
-  margin-top: 4px;
-  margin-left: 15px;
-  text-decoration: none;
-  color: #5c5c6e;
-  -webkit-transition: all 0.15s ease;
-  -moz-transition:    all 0.15s ease;
-  -ms-transition:     all 0.15s ease;
-  -o-transition:      all 0.15s ease;
-  transition:         all 0.15s ease;
+  width: 25%;
+  background: #a2a1ba;
+  color: #fff;
+  border-radius: 0 4px 4px 0;
+  text-transform: uppercase;
+  font-size: 14px;
+  border-color: #88879d;
+  cursor: pointer;
+  -webkit-transition: all 0.1s ease;
+  -moz-transition:    all 0.1s ease;
+  -ms-transition:     all 0.1s ease;
+  -o-transition:      all 0.1s ease;
+  transition:         all 0.1s ease;
 }
-.footer .ico:hover {
-  color: #a2a1ba;
+.mailing-list .email-submit:hover {
+  background: #DBB500;
+  border-color: #b09100;
+  color: #fff;
+}
+.mailing-list .email-signup {
+  float: left;
+  width: 75%;
+  color: #303043;
+  border-right: none;
+  padding: 0 10px;
 }
 
 .CodeMirror { background-color: #fff; }

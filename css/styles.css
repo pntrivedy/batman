@@ -294,8 +294,9 @@ div[class*="span"] {
 }
 
 .code-editor {
-  background: #DEDEEB;
-  height: 400px;
+  /* background: #DEDEEB; */
+  background: rgba(57, 57, 63, 0.67);
+  height: 600px;
   margin: 0 0 20px 0;
   border-radius: 4px;
   cursor: pointer;
@@ -308,7 +309,7 @@ div[class*="span"] {
 }
 .code-editor-browser {
   width: 293px;
-  height: 330px;
+  height: 530px;
   float: left;
   padding: 20px 0;
   overflow: hidden;
@@ -330,10 +331,9 @@ div[class*="span"] {
 
 .code-editor-text {
   background: #CCCCD9;
-  width: 607px;
-  height: 290px;
+  width: 687px;
+  height: 570px;
   float: right;
-  padding: 40px;
   border-radius: 0 0 4px 0;
 }
 .code-terminal-text {

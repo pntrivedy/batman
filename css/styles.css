@@ -189,8 +189,8 @@ div[class*="span"] {
   font-size: 14px;
   line-height: 18px;
 }
-.btn:hover { background: #DBB500; }
-.btn:active { background: #db9b00; }
+.btn:hover { background: #ffe43f; color: #1f1f27 !important; }
+.btn:active { background: #ffe43f; }
 
 /* boxes */
 .box {

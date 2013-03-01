@@ -334,7 +334,7 @@ div[class*="span"] {
   height: 30px;
   background: #A4A4AE url(../images/window-controls.png) no-repeat 8px 8px;
   color: #000;
-  border-radius: 4px 4px 0 0; 
+  border-radius: 4px 4px 0 0;
 }
 .code-header h3 {
   font-size: 18px;
@@ -532,3 +532,8 @@ div[class*="span"] {
 }
 
 .CodeMirror { background-color: #fff; }
+
+.terminal-field {
+  background: transparent;
+  border: none;
+}

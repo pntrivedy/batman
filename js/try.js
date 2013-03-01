@@ -158,10 +158,11 @@
     Step.prototype.start = function() {};
 
     Step.prototype.next = function() {
-      var array, index;
+      var array, index, step;
       array = steps.toArray();
       index = array.indexOf(this);
-      return array[index + 1].activate();
+      step = array[index + 1];
+      return step.activate();
     };
 
     return Step;
@@ -178,7 +179,9 @@
 
     ConsoleStep.prototype.isConsole = true;
 
-    ConsoleStep.prototype.start = function() {};
+    ConsoleStep.prototype.start = function() {
+      return $('#terminal-field').focus();
+    };
 
     ConsoleStep.expect = function(regex) {
       return this.prototype.regex = regex;
@@ -232,7 +235,7 @@
 
     GemfileStep.prototype.body = "Let's build an app. We've created a brand new Rails app for you.";
 
-    GemfileStep.prototype.task = "Start off by adding `batman-rails` to your gemfile.";
+    GemfileStep.prototype.task = "Start off by adding `batman-rails` to your gemfile, and press Cmd+S when you're done.";
 
     GemfileStep.expect(/gem\s*[\"|\']batman\-rails[\"|\']/, {
       "in": 'Gemfile'
@@ -254,7 +257,7 @@
 
     GenerateAppStep.prototype.body = "Now, let's create a new batman application inside your rails app.";
 
-    GenerateAppStep.prototype.task = "Run `rails generate batman:app` from the console.";
+    GenerateAppStep.prototype.task = "Run `rails generate batman:app` from the console, and press enter to submit the command.";
 
     GenerateAppStep.expect(/rails\s*[g|generate]\s*batman:app/);
 

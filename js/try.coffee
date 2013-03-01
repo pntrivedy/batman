@@ -81,13 +81,15 @@ class Try.Step extends Batman.Object
 	next: ->
 		array = steps.toArray()
 		index = array.indexOf(this)
-		array[index + 1].activate()
+		step = array[index + 1]
+		step.activate()
 
 
 class Try.ConsoleStep extends Try.Step
 	isConsole: true
 
 	start: ->
+		$('#terminal-field').focus()
 
 	@expect: (regex) ->
 		this::regex = regex

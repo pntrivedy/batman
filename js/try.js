@@ -158,6 +158,8 @@
       return Step.__super__.constructor.apply(this, arguments);
     }
 
+    Step.prototype.hasNext = true;
+
     Step.prototype.activate = function() {
       Try.set('currentStep', this);
       return this.start();
@@ -340,6 +342,8 @@
     FinalStep.prototype.heading = "That's all for now, more soon!";
 
     FinalStep.prototype.body = "<a href='/batman-rdio.zip'>Click here</a> to download your app.";
+
+    FinalStep.prototype.hasNext = false;
 
     return FinalStep;
 

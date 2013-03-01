@@ -79,6 +79,7 @@ class Try.FileView extends Batman.View
 	"""
 
 class Try.Step extends Batman.Object
+	hasNext: true
 	activate: ->
 		Try.set('currentStep', this)
 		@start()
@@ -158,6 +159,7 @@ class Try.GenerateScaffold extends Try.ConsoleStep
 class Try.FinalStep extends Try.Step
 	heading: "That's all for now, more soon!"
 	body: "<a href='/batman-rdio.zip'>Click here</a> to download your app."
+	hasNext: false
 
 steps = new Batman.Set(
 	new Try.GemfileStep

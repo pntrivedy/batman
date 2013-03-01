@@ -536,4 +536,6 @@ div[class*="span"] {
 .terminal-field {
   background: transparent;
   border: none;
+  font-size: 2em;
+  color: #fff;
 }

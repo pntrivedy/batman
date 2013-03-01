@@ -162,7 +162,7 @@
       array = steps.toArray();
       index = array.indexOf(this);
       step = array[index + 1];
-      return step.activate();
+      return typeof step.activate === "function" ? step.activate() : void 0;
     };
 
     return Step;
@@ -185,6 +185,12 @@
 
     ConsoleStep.expect = function(regex) {
       return this.prototype.regex = regex;
+    };
+
+    ConsoleStep.prototype.check = function(value) {
+      if (this.regex.test(value)) {
+        return this.next();
+      }
     };
 
     return ConsoleStep;
@@ -271,7 +277,13 @@
 
   Try.File.load(function() {
     Try.run();
-    return steps.get('first').activate();
+    steps.get('first').activate();
+    return $('#terminal-field').on('keydown', function(e) {
+      var _ref;
+      if (e.keyCode === 13) {
+        return (_ref = Try.get('currentStep')) != null ? _ref.check(this.value) : void 0;
+      }
+    });
   });
 
 }).call(this);

@@ -358,6 +358,9 @@ div[class*="span"] {
   background: rgba(114, 53, 192, 0.750);
 }
 
+.cm-s-solarized.CodeMirror {
+  z-index: 1;
+}
 
 /* Code Editor */
 

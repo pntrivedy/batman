@@ -55,7 +55,7 @@
     };
 
     LayoutView.prototype.previewApp = function() {
-      return window.open('/preview');
+      return window.open('/preview', "app_preview", "width=400,height=600");
     };
 
     return LayoutView;

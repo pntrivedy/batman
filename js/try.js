@@ -106,13 +106,17 @@
                 return _this.save();
               }
             };
-            _this.node = $('<div></div>');
+            _this.node = $('<div style="height:100%"></div>');
             _this.cm = CodeMirror(_this.node[0], {
               theme: 'solarized',
               mode: mode,
               lineNumbers: true,
               extraKeys: keys
             });
+            _this.cm.getWrapperElement().style.height = "100%";
+            setTimeout(function() {
+              return _this.cm.refresh();
+            }, 0);
           }
           _this.cm.setValue(_this.get('content') || '');
           return $('#code-editor').html('').append(_this.node);
@@ -210,6 +214,10 @@
     CodeStep.prototype.start = function() {
       var file, filename, _ref,
         _this = this;
+      if (filename = this.focusFile) {
+        file = Try.File.findByName(filename);
+        Try.layout.showFile(file);
+      }
       if (filename = (_ref = this.options) != null ? _ref["in"] : void 0) {
         file = Try.File.findByName(filename);
         return file.observe('value', function(value) {
@@ -223,6 +231,10 @@
     CodeStep.expect = function(regex, options) {
       this.prototype.regex = regex;
       return this.prototype.options = options;
+    };
+
+    CodeStep.focus = function(name) {
+      return this.prototype.focusFile = name;
     };
 
     return CodeStep;
@@ -246,6 +258,8 @@
     GemfileStep.expect(/gem\s*[\"|\']batman\-rails[\"|\']/, {
       "in": 'Gemfile'
     });
+
+    GemfileStep.focus('Gemfile');
 
     return GemfileStep;
 
@@ -271,7 +285,63 @@
 
   })(Try.ConsoleStep);
 
-  steps = new Batman.Set(new Try.GemfileStep, new Try.GenerateAppStep);
+  Try.ExploreStep = (function(_super) {
+
+    __extends(ExploreStep, _super);
+
+    function ExploreStep() {
+      return ExploreStep.__super__.constructor.apply(this, arguments);
+    }
+
+    ExploreStep.prototype.heading = "And there's your app!";
+
+    ExploreStep.prototype.body = "Take a moment to explore through the directory structure.";
+
+    ExploreStep.prototype.task = "When you're ready, click Next Step.";
+
+    ExploreStep.focus('app');
+
+    return ExploreStep;
+
+  })(Try.CodeStep);
+
+  Try.GenerateScaffold = (function(_super) {
+
+    __extends(GenerateScaffold, _super);
+
+    function GenerateScaffold() {
+      return GenerateScaffold.__super__.constructor.apply(this, arguments);
+    }
+
+    GenerateScaffold.prototype.heading = "Let's generate our first resource.";
+
+    GenerateScaffold.prototype.body = "We'll need to fetch some artists from our Rdio API.";
+
+    GenerateScaffold.prototype.task = "Type `rails g batman:scaffold Artist` to make a new scaffold.";
+
+    GenerateScaffold.expect(/rails\s*[g|generate]\s*batman:scaffold\s*Artist/);
+
+    return GenerateScaffold;
+
+  })(Try.ConsoleStep);
+
+  Try.FinalStep = (function(_super) {
+
+    __extends(FinalStep, _super);
+
+    function FinalStep() {
+      return FinalStep.__super__.constructor.apply(this, arguments);
+    }
+
+    FinalStep.prototype.heading = "That's all for now, more soon!";
+
+    FinalStep.prototype.body = "<a href='/batman-rdio.zip'>Click here</a> to download your app.";
+
+    return FinalStep;
+
+  })(Try.Step);
+
+  steps = new Batman.Set(new Try.GemfileStep, new Try.GenerateAppStep, new Try.ExploreStep, new Try.GenerateScaffold, new Try.FinalStep);
 
   Try.set('steps', steps);
 

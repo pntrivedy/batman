@@ -52,8 +52,12 @@ class Try.File extends Batman.Model
 					mode = if @get('name').indexOf('.coffee') != -1 then 'coffeescript' else 'ruby'
 					keys = {'Cmd-S': => @save() }
 
-					@node = $('<div></div>')
+					@node = $('<div style="height:100%"></div>')
 					@cm = CodeMirror(@node[0], theme: 'solarized', mode: mode, lineNumbers: true, extraKeys: keys)
+					@cm.getWrapperElement().style.height = "100%"
+					setTimeout =>
+						@cm.refresh()
+					, 0
 
 				@cm.setValue(@get('content') || '')
 				$('#code-editor').html('').append(@node)
@@ -102,6 +106,10 @@ class Try.CodeStep extends Try.Step
 	isCode: true
 
 	start: ->
+		if filename = @focusFile
+			file = Try.File.findByName(filename)
+			Try.layout.showFile(file)
+
 		if filename = @options?.in
 			file = Try.File.findByName(filename)
 			file.observe 'value', (value) =>
@@ -112,12 +120,16 @@ class Try.CodeStep extends Try.Step
 		this::regex = regex
 		this::options = options
 
+	@focus: (name) ->
+		this::focusFile = name
+
 class Try.GemfileStep extends Try.CodeStep
 	heading: "Welcome to Batman!"
 	body: "Let's build an app. We've created a brand new Rails app for you."
 	task: "Start off by adding `batman-rails` to your gemfile, and press Cmd+S when you're done."
 
 	@expect /gem\s*[\"|\']batman\-rails[\"|\']/, in: 'Gemfile'
+	@focus 'Gemfile'
 
 class Try.GenerateAppStep extends Try.ConsoleStep
 	heading: "Great! We've run `bundle install` for you."
@@ -126,9 +138,30 @@ class Try.GenerateAppStep extends Try.ConsoleStep
 
 	@expect /rails\s*[g|generate]\s*batman:app/
 
+class Try.ExploreStep extends Try.CodeStep
+	heading: "And there's your app!"
+	body: "Take a moment to explore through the directory structure."
+	task: "When you're ready, click Next Step."
+
+	@focus 'app'
+
+class Try.GenerateScaffold extends Try.ConsoleStep
+	heading: "Let's generate our first resource."
+	body: "We'll need to fetch some artists from our Rdio API."
+	task: "Type `rails g batman:scaffold Artist` to make a new scaffold."
+
+	@expect /rails\s*[g|generate]\s*batman:scaffold\s*Artist/
+
+class Try.FinalStep extends Try.Step
+	heading: "That's all for now, more soon!"
+	body: "<a href='/batman-rdio.zip'>Click here</a> to download your app."
+
 steps = new Batman.Set(
 	new Try.GemfileStep
 	new Try.GenerateAppStep
+	new Try.ExploreStep
+	new Try.GenerateScaffold
+	new Try.FinalStep
 )
 
 Try.set('steps', steps)

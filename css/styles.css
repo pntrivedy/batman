@@ -159,13 +159,19 @@ div[class*="span"] {
 
 
 .icn { display: inline-block; text-indent: -900em; overflow: hidden; }
-/*
+
 .icn-ruby { background: url(../images/icn-ruby.png) 0 0 no-repeat; width: 88px; height: 78px; }
 .icn-scale { background: url(../images/icn-scale.png) 0 0 no-repeat; width: 104px; height: 70px; }
 .icn-heart { background: url(../images/icn-heart.png) 0 0 no-repeat; width: 88px; height: 75px; }
-.overview .icn { margin: 0 15px; }
-*/
 
+.overview .icn { margin: 0 0 30px 0; }
+.overview-middle-col {
+  border-left: solid 1px #d9d9ef;
+  border-right: solid 1px #d9d9ef;
+}
+.overview .span8 {  padding: 40px 30px !important; }
+.overview .span8 p { color: #5c5c6e; }
+.overview .last-col { margin-right: 0 !important; }
 
 /* buttons */
 .btn {

@@ -4,10 +4,6 @@ $('<script src="js/codemirror.js"></script>').appendTo('head')
 $('<script src="js/modes/javascript.js"></script>').appendTo('head')
 $('<link rel="stylesheet" href="css/codemirror.css" />').appendTo('head')
 
-cm = CodeMirror $('.code-editor-text').html('')[0],
-	value: "var foo = 'bar'\nfoo += 'baz'"
-	mode: "javascript"
-
 class window.Try extends Batman.App
 	@dispatcher: false
 	@navigator: false
@@ -23,6 +19,7 @@ class Try.LayoutView extends Batman.View
 			file.set('isExpanded', !file.get('isExpanded'))
 		else
 			@set 'currentFile', file
+			file.show()
 
 	@accessor 'currentStep', ->
 		Try.get('steps.first')
@@ -42,6 +39,19 @@ class Try.File extends Batman.Model
 			set
 
 	isExpanded: false
+
+	show: ->
+		new Batman.Request
+			url: "/app_files/1.json?path=#{@get('id')}"
+			success: (data) =>
+				@fromJSON(data)
+
+				if !@cm
+					@node = $('<div></div>')
+					@cm = CodeMirror(@node[0], mode: 'javascript', lineNumbers: true)
+
+				@cm.setValue(@get('content') || '')
+				$('#code-editor').html('').append(@node)
 
 class Try.FileView extends Batman.View
 	html: """

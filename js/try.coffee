@@ -104,7 +104,7 @@ class Try.CodeStep extends Try.Step
 	start: ->
 		if filename = @focusFile
 			file = Try.File.findByName(filename)
-			file.show()
+			Try.layout.showFile(file)
 
 		if filename = @options?.in
 			file = Try.File.findByName(filename)
@@ -135,11 +135,29 @@ class Try.GenerateAppStep extends Try.ConsoleStep
 	@expect /rails\s*[g|generate]\s*batman:app/
 
 class Try.ExploreStep extends Try.CodeStep
+	heading: "And there's your app!"
+	body: "Take a moment to explore through the directory structure."
+	task: "When you're ready, click Next Step."
 
+	@focus 'app'
+
+class Try.GenerateScaffold extends Try.ConsoleStep
+	heading: "Let's generate our first resource."
+	body: "We'll need to fetch some artists from our Rdio API."
+	task: "Type `rails g batman:scaffold Artist` to make a new scaffold."
+
+	@expect /rails\s*[g|generate]\s*batman:scaffold\s*Artist/
+
+class Try.FinalStep extends Try.Step
+	heading: "That's all for now, more soon!"
+	body: "<a href='/batman-rdio.zip'>Click here</a> to download your app."
 
 steps = new Batman.Set(
 	new Try.GemfileStep
 	new Try.GenerateAppStep
+	new Try.ExploreStep
+	new Try.GenerateScaffold
+	new Try.FinalStep
 )
 
 Try.set('steps', steps)

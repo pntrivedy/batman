@@ -212,7 +212,7 @@
         _this = this;
       if (filename = this.focusFile) {
         file = Try.File.findByName(filename);
-        file.show();
+        Try.layout.showFile(file);
       }
       if (filename = (_ref = this.options) != null ? _ref["in"] : void 0) {
         file = Try.File.findByName(filename);
@@ -289,11 +289,55 @@
       return ExploreStep.__super__.constructor.apply(this, arguments);
     }
 
+    ExploreStep.prototype.heading = "And there's your app!";
+
+    ExploreStep.prototype.body = "Take a moment to explore through the directory structure.";
+
+    ExploreStep.prototype.task = "When you're ready, click Next Step.";
+
+    ExploreStep.focus('app');
+
     return ExploreStep;
 
   })(Try.CodeStep);
 
-  steps = new Batman.Set(new Try.GemfileStep, new Try.GenerateAppStep);
+  Try.GenerateScaffold = (function(_super) {
+
+    __extends(GenerateScaffold, _super);
+
+    function GenerateScaffold() {
+      return GenerateScaffold.__super__.constructor.apply(this, arguments);
+    }
+
+    GenerateScaffold.prototype.heading = "Let's generate our first resource.";
+
+    GenerateScaffold.prototype.body = "We'll need to fetch some artists from our Rdio API.";
+
+    GenerateScaffold.prototype.task = "Type `rails g batman:scaffold Artist` to make a new scaffold.";
+
+    GenerateScaffold.expect(/rails\s*[g|generate]\s*batman:scaffold\s*Artist/);
+
+    return GenerateScaffold;
+
+  })(Try.ConsoleStep);
+
+  Try.FinalStep = (function(_super) {
+
+    __extends(FinalStep, _super);
+
+    function FinalStep() {
+      return FinalStep.__super__.constructor.apply(this, arguments);
+    }
+
+    FinalStep.prototype.heading = "That's all for now, more soon!";
+
+    FinalStep.prototype.body = "<a href='/batman-rdio.zip'>Click here</a> to download your app.";
+
+    return FinalStep;
+
+  })(Try.Step);
+
+  steps = new Batman.Set(new Try.GemfileStep, new Try.GenerateAppStep, new Try.ExploreStep, new Try.GenerateScaffold, new Try.FinalStep);
 
   Try.set('steps', steps);
 

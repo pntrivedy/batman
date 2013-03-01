@@ -1,4 +1,5 @@
 $('<script src="lib/dist/batman.jquery.js"></script>').appendTo('head')
+$('<script src="lib/extras/batman.rails.js"></script>').appendTo('head')
 $('<script src="js/codemirror.js"></script>').appendTo('head')
 $('<script src="js/modes/javascript.js"></script>').appendTo('head')
 $('<link rel="stylesheet" href="css/codemirror.css" />').appendTo('head')
@@ -27,13 +28,11 @@ class Try.LayoutView extends Batman.View
 		Try.get('steps.first')
 
 class Try.File extends Batman.Model
-	@encode 'name', 'content', 'isDirectory'
+	@storageKey: 'app_files'
 
-	@accessor 'children', ->
-		new Batman.Set(
-			new Try.File(name: 'foo', isDirectory: false),
-			new Try.File(name: 'bar', isDirectory: false)
-		)
+	@persist Batman.RailsStorage
+
+	@encode 'name', 'content', 'isDirectory', 'children'
 
 class Try.FileView extends Batman.View
 	html: """
@@ -64,10 +63,6 @@ class Try.InitializeAppStep extends Try.CodeStep
 	task: "Start off by adding `batman-rails` to your gemfile."
 
 	@expect /gem\w[\"\']batman\-rails[\"\']/, in: 'Gemfile'
-
-
-files = new Batman.Set(new Try.File(name: 'rdio', isDirectory: true))
-Try.set('files', files)
 
 steps = new Batman.Set(
 	new Try.InitializeAppStep

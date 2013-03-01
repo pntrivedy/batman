@@ -282,7 +282,7 @@ div[class*="span"] {
   text-decoration: none;
 }
 .nav-primary .nav-top-highlight {  }
-.nav-top-highlight a { color: #FFF; line-height: 34px; background: #DBB500; height: 32px; margin: 16px 0 0 20px; border-radius: 4px; }
+.nav-top-highlight a { color: #1f1f27; line-height: 34px; background: #ffe43f; height: 32px; margin: 16px 0 0 20px; border-radius: 4px; }
 .nav-primary li { float: left; }
 .nav-primary li:first-child a{
 }
@@ -322,10 +322,25 @@ div[class*="span"] {
   margin-bottom: 80px;
 }
 
+/* Next Steps */
+
+.next-step {
+  float: right;
+  background-color: #ffe43f;
+  padding: 12px 24px;
+  color: #1f1f27;
+  text-decoration: none;
+  margin-bottom: -60px;
+}
+.next-step:hover {
+  background-color: rgb(255, 219, 0);
+  color: #1f1f27;
+}
+
 .code-editor {
   /* background: #DEDEEB; */
   background: rgba(57, 57, 63, 0.67);
-  height: 600px;
+  height: 500px;
   margin: 0 0 20px 0;
   border-radius: 4px;
   cursor: pointer;
@@ -342,7 +357,7 @@ div[class*="span"] {
 }
 .code-editor-browser {
   width: 293px;
-  height: 530px;
+  height: 430px;
   float: left;
   padding: 20px 0;
   overflow: hidden;
@@ -355,17 +370,19 @@ div[class*="span"] {
 
 .code-editor-browser .file {
   text-decoration: none;
+  font-style: italic;
 }
 
 .code-editor-browser .directory {
   font-weight: bold;
-  text-decoration: underline;
+  font-style: normal !important;
+  color:#e2e2ff;
 }
 
 .code-editor-text {
   background: #CCCCD9;
   width: 687px;
-  height: 570px;
+  height: 470px;
   float: right;
   border-radius: 0 0 4px 0;
 }

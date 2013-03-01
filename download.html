@@ -3,38 +3,41 @@ key: download
 layout: default
 ---
 
-<!-- Begin content-column-wrapper-full -->
-<div id="content-column-wrapper-full">
+<div class="plain-row">
+  <div class="wrapper">
+    <div class="row clearfix">
 
-  <h2 id="installation">Get Started in Three Simple Steps</h2><br />
+      <h2 id="installation">Get Started in Three Simple Steps</h2><br />
 
-  <h3 class="clear">1. Install Node.js<img src="/images/logo-node.png" style="float:right;margin-top:-10px" /></h3>
-  <h6><a href="http://nodejs.org/" target="_blank">Node.js Installer</a></h6>
-  <p></p><br />
+      <h3 class="clear">1. Install Node.js<img src="/images/logo-node.png" style="float:right;margin-top:-10px" /></h3>
+      <h6><a href="http://nodejs.org/" target="_blank">Node.js Installer</a></h6>
+      <p></p><br />
 
-  <h3 class="clear">2. Install batman.js<img src="/images/logo-black.png" style="float:right;margin:25px;margin-right:15px;margin-top:2px" /></h3>
-  <div style="width:650px">
-{% highlight bash %}
-npm install -g batman
-{% endhighlight %}
+      <h3 class="clear">2. Install batman.js<img src="/images/logo-black.png" style="float:right;margin:25px;margin-right:15px;margin-top:2px" /></h3>
+      <div style="width:650px">
+    {% highlight bash %}
+    npm install -g batman
+    {% endhighlight %}
+      </div>
+
+      <h4>Start Kicking Apps</h4>
+      <div style="width:650px">
+    {% highlight bash %}
+    cd ~/code
+    batman new my_app
+
+    cd my_app
+    batman server
+    open http://localhost:1047
+    {% endhighlight %}
+      </div>
+      <h6><a href="/examples.html">Get started</a> building things!</h6><br /><br />
+
+      <h3>jQuery Adapter</h3>
+      <p>batman.js has no hard browser-land dependencies. That said, there are a number of things that are beyond the scope of the microframework, for example XHR and animation. These things are wrapped by batman objects, but the default build includes a small dependency file that outsources these things to other micro libraries.</p>
+      <p>The batman.solo.js dependency file adds less than 5kb to the framework, and is likely something you'll want to include. However, if you're already using jQuery in your app, jQuery can do all of these things for you. We've included an alternate jQuery adapter that will add no additional size to batman.js aside from the weight of jQuery itself.</p>
+      <p>If you would like to use jQuery in your project, simply source batman.jquery.js instead of batman.js, in addition to your jquery.js.</p>
+
+    </div>
   </div>
-
-  <h4>Start Kicking Apps</h4>
-  <div style="width:650px">
-{% highlight bash %}
-cd ~/code
-batman new my_app
-
-cd my_app
-batman server
-open http://localhost:1047
-{% endhighlight %}
-  </div>
-  <h6><a href="/examples.html">Get started</a> building things!</h6><br /><br />
-
-  <h3>jQuery Adapter</h3>
-  <p>batman.js has no hard browser-land dependencies. That said, there are a number of things that are beyond the scope of the microframework, for example XHR and animation. These things are wrapped by batman objects, but the default build includes a small dependency file that outsources these things to other micro libraries.</p>
-  <p>The batman.solo.js dependency file adds less than 5kb to the framework, and is likely something you'll want to include. However, if you're already using jQuery in your app, jQuery can do all of these things for you. We've included an alternate jQuery adapter that will add no additional size to batman.js aside from the weight of jQuery itself.</p>
-  <p>If you would like to use jQuery in your project, simply source batman.jquery.js instead of batman.js, in addition to your jquery.js.</p>
 </div>
-<!-- End content-column-wrapper-full -->

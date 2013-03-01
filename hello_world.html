@@ -4,7 +4,16 @@ subkey: hello world
 layout: default
 ---
 
-{% include examples_sidebar.html %}
+
+<div class="plain-row">
+  <div class="wrapper">
+    <div class="row clearfix">
+
+      <div class="span6">
+        {% include examples_sidebar.html %}
+      </div>
+
+      <div class="span18">
 
 <!-- Begin content-column-wrapper -->
 <div id="content-column-wrapper">
@@ -78,5 +87,9 @@ layout: default
   <h4>Fin</h4>
   {{ launch_links }}
 
+      </div>
+
+    </div>
+  </div>
 </div>
-<!-- End content-column-wrapper -->
+

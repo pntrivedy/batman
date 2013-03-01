@@ -4,6 +4,7 @@ $('<script src="js/codemirror.js"></script>').appendTo('head')
 $('<script src="js/modes/coffeescript.js"></script>').appendTo('head')
 $('<script src="js/modes/ruby.js"></script>').appendTo('head')
 $('<link rel="stylesheet" href="css/codemirror.css" />').appendTo('head')
+$('<link rel="stylesheet" href="css/solarized.css" />').appendTo('head')
 
 class window.Try extends Batman.App
 	@dispatcher: false
@@ -51,7 +52,7 @@ class Try.File extends Batman.Model
 					@node = $('<div></div>')
 					mode = if @get('name').indexOf('.coffee') != -1 then 'coffeescript' else 'ruby'
 					console.log mode
-					@cm = CodeMirror(@node[0], mode: mode, lineNumbers: true)
+					@cm = CodeMirror(@node[0], theme: 'solarized', mode: mode, lineNumbers: true)
 
 				@cm.setValue(@get('content') || '')
 				$('#code-editor').html('').append(@node)

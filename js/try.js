@@ -16,6 +16,8 @@
 
   $('<link rel="stylesheet" href="css/codemirror.css" />').appendTo('head');
 
+  $('<link rel="stylesheet" href="css/solarized.css" />').appendTo('head');
+
   window.Try = (function(_super) {
 
     __extends(Try, _super);
@@ -102,6 +104,7 @@
             mode = _this.get('name').indexOf('.coffee') !== -1 ? 'coffeescript' : 'ruby';
             console.log(mode);
             _this.cm = CodeMirror(_this.node[0], {
+              theme: 'solarized',
               mode: mode,
               lineNumbers: true
             });

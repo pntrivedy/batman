@@ -577,6 +577,10 @@ div[class*="span"] {
 
 .CodeMirror { background-color: #fff; }
 
+.cm-s-solarized .CodeMirror-gutters {
+  box-shadow: none !important;
+}
+
 .terminal-field {
   background: transparent;
   border: none;

@@ -29,21 +29,28 @@ class Try.LayoutView extends Batman.View
 
 class Try.File extends Batman.Model
 	@storageKey: 'app_files'
+	@resourceName: 'app_files'
 
 	@persist Batman.RailsStorage
 
-	@encode 'name', 'content', 'isDirectory', 'children'
+	@encode 'name', 'content', 'isDirectory'
+	@encode 'children',
+		decode: (kids) ->
+			set = new Batman.Set
+			for kid in kids
+				set.add (new Try.File).fromJSON(kid)
+			set
+
+	isExpanded: false
 
 class Try.FileView extends Batman.View
 	html: """
-	<div data-addclass-directory="file.isDirectory" data-addclass-expanded="file.isExpanded">
-		<a data-bind="file.name" data-event-click="showFile | withArguments file" class="file"></a>
-		<ul data-showif="file.isDirectory" data-renderif="file.isDirectory">
+		<a data-bind="file.name" data-event-click="showFile | withArguments file" class="file" data-addclass-directory="file.isDirectory"></a>
+		<ul data-showif="file.isDirectory | and file.isExpanded" data-renderif="file.isDirectory">
 			<li data-foreach-file="file.children">
 				<div data-view="FileView"></div>
 			</li>
 		</ul>
-	</div>
 	"""
 
 class Try.Step extends Batman.Object

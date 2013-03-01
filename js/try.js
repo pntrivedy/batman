@@ -72,9 +72,25 @@
 
     File.storageKey = 'app_files';
 
+    File.resourceName = 'app_files';
+
     File.persist(Batman.RailsStorage);
 
-    File.encode('name', 'content', 'isDirectory', 'children');
+    File.encode('name', 'content', 'isDirectory');
+
+    File.encode('children', {
+      decode: function(kids) {
+        var kid, set, _i, _len;
+        set = new Batman.Set;
+        for (_i = 0, _len = kids.length; _i < _len; _i++) {
+          kid = kids[_i];
+          set.add((new Try.File).fromJSON(kid));
+        }
+        return set;
+      }
+    });
+
+    File.prototype.isExpanded = false;
 
     return File;
 
@@ -88,7 +104,7 @@
       return FileView.__super__.constructor.apply(this, arguments);
     }
 
-    FileView.prototype.html = "<div data-addclass-directory=\"file.isDirectory\" data-addclass-expanded=\"file.isExpanded\">\n	<a data-bind=\"file.name\" data-event-click=\"showFile | withArguments file\" class=\"file\"></a>\n	<ul data-showif=\"file.isDirectory\" data-renderif=\"file.isDirectory\">\n		<li data-foreach-file=\"file.children\">\n			<div data-view=\"FileView\"></div>\n		</li>\n	</ul>\n</div>";
+    FileView.prototype.html = "<a data-bind=\"file.name\" data-event-click=\"showFile | withArguments file\" class=\"file\" data-addclass-directory=\"file.isDirectory\"></a>\n<ul data-showif=\"file.isDirectory | and file.isExpanded\" data-renderif=\"file.isDirectory\">\n	<li data-foreach-file=\"file.children\">\n		<div data-view=\"FileView\"></div>\n	</li>\n</ul>";
 
     return FileView;
 

@@ -20,6 +20,8 @@ h4 { font-size: 130%; margin-bottom: .5em; margin-top: 2em; }
 a { color: #a2a2ba; }
 a:hover { color: #fff; }
 
+code { font-family: Monaco, Consolas, "Lucida Console", monospace; }
+
 
 /* layout */
 .row {
@@ -75,6 +77,7 @@ div[class*="span"] {
 .ppt { padding-top: 20px; }
 .ppr { padding-right: 20px; }
 .ppl { padding-left: 20px; }
+.ppb { padding-bottom: 20px; }
 
 .sb{ margin-bottom: 10px; }
 .ssb{ margin-bottom: 20px; }
@@ -89,6 +92,8 @@ div[class*="span"] {
 
 .divider-top { border-top: solid 1px #e8e8fc; margin-top: 15px; padding-top: 15px; }
 .divider { border-bottom: solid 1px #e8e8fc; margin-bottom: 15px; padding-bottom: 15px; }
+
+.small { font-size: 11px; }
 
 /* icon font */
 @font-face {
@@ -183,6 +188,11 @@ div[class*="span"] {
   padding: 12px;
 }
 
+.box {
+  background: #f9f9f9;
+  padding: 20px;
+}
+
 
 
 /* header */
@@ -191,7 +201,7 @@ div[class*="span"] {
   width: 100%;
   height: 64px;
   background: #1f1f27;
-  box-shadow: 0 5px 10px rgba(0,0,0,.15);
+  box-shadow: 0 5px 10px rgba(0,0,0,.05);
 }
 .header a{ color: #a2a2ba;
   -webkit-transition: all 0.15s ease;
@@ -334,6 +344,64 @@ div[class*="span"] {
 /* homepage > demo feature */
 .demo .files { width: 150px; padding: 15px; }
 
-/* footer */
+/* homepage > tweet */
+.tweet {
+  font-size: 12px;
+}
+.tweet_text {
+  background: #efefef;
+  padding: 20px;
+  display: block;
+  margin-right: 20px;
+  font-size: 16px;
+  position: relative;
+}
+.tweet_text:after{
+  display: block;
+  position: absolute;
+  bottom: -10px;
+  left: 20px;
+  content: " ";
+  width: 0px;
+  height: 0px;
+  border-style: solid;
+  border-width: 10px 10px 0 10px;
+  border-color: #efefef transparent transparent transparent;
+}
+.tweet_time {
+  margin-left: 22px;
+}
+.tweet_time:before {
+  font-family: 'elusive';
+  content: '\e018';
+  margin: 0 10px 0 0;
+  font-size: 16px;
+  color: #ccc;
+  line-height: 1.4em;
+}
+.tweet_time a, .tweet_user { text-decoration: none; }
+.tweet_time a:hover, .tweet_user:hover { text-decoration: underline; }
 
+/* footer */
+.footer{
+  font-size: 12px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+}
+.footer .ico {
+  font-size: 24px;
+  float: right;
+  margin-top: 4px;
+  margin-left: 15px;
+  text-decoration: none;
+  color: #5c5c6e;
+  -webkit-transition: all 0.15s ease;
+  -moz-transition:    all 0.15s ease;
+  -ms-transition:     all 0.15s ease;
+  -o-transition:      all 0.15s ease;
+  transition:         all 0.15s ease;
+}
+.footer .ico:hover {
+  color: #a2a1ba;
+}
 

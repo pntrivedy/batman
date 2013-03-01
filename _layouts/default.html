@@ -50,29 +50,62 @@
   <!-- Begin content-wrapper -->
 
 
-<div class="footer">
-  <div class="wrapper">
-    <div class="row clearfix">
-
-      <div class="span12">
-        Copyright 2011 &ndash; Shopify. Released under the <a href="http://www.opensource.org/licenses/mit-license.php" target="_blank">MIT license</a>.<br />
-        batman.js is a Shopify project, created by <a href="http://github.com/nciagra">Nick Small</a>. <a href="http://github.com/shopify/batman" class="inline-link">GitHub</a> <a href="http://twitter.com/nciagra" class="inline-link">Twitter</a></li>
+  <div class="plain-row">
+    <div class="wrapper clearfix">
+      <div class="row clearfix ppt ppb">
+        <div class="span12 ppt ppb">
+          <div class="tweet" id="latest-tweet"></div>
+        </div>
+        <div class="span12 ppt ppb">
+          MAiling list.
+        </div>
       </div>
-
-      <div class="span12 tr">
-        <a class="shopify-logo" href="http://www.shopify.com" target="_blank"><img src="/images/logo-shopify.png" width="185" height="54" alt="ecommerce software" /></a>
-      </div>
-
     </div>
   </div>
-</div>
 
-  <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
-  <script type="text/javascript" src="/js/scripts.js"></script>
-  <script type="text/javascript" src="/js/jquery.tweet.js"></script>
+  <div class="footer">
+    <div class="wrapper">
+      <div class="row clearfix">
 
-  <script type="text/javascript">
+        <div class="span12">
+          <a class="shopify-logo" href="http://www.shopify.com" target="_blank"><img src="/images/logo-shopify.png"  alt="ecommerce software" /></a>
+        </div>
+
+        <div class="span12 pt tr">
+          <a href="http://github.com/shopify/batman" class="ico ico-github"></a>
+          <a href="https://twitter.com/batmanjs" class="ico ico-twitter"></a>
+          <p>Copyright 2013 &ndash; Shopify. Released under the <a href="http://www.opensource.org/licenses/mit-license.php" target="_blank">MIT license</a>.</p>
+          <p>batman.js is a Shopify project, created by <a href="http://github.com/nciagra">Nick Small</a>.</p>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+
+  <script src="/js/scripts.js"></script>
+  <script src="/js/jquery.tweet.js"></script>
+  <script>
+  // Begin jquery tweet //
+  $(document).ready(function(){
+      $("#latest-tweet").tweet({
+          join_text: "auto",
+          count: 1,
+          query: "batmanjs",
+          auto_join_text_default: "",
+          auto_join_text_ed: "",
+          auto_join_text_ing: "",
+          auto_join_text_reply: "",
+          auto_join_text_url: "",
+          loading_text: "Loading tweets..."
+      });
+  });
+  </script>
+
+  <script>
     var _gaq = _gaq || [];
     _gaq.push(['_setAccount', 'UA-25319166-1']);
     _gaq.push(['_trackPageview']);

@@ -555,4 +555,6 @@ div[class*="span"] {
   border: none;
   font-size: 2em;
   color: #fff;
+  width: 800px;
+  text-overflow: hidden;
 }

@@ -286,6 +286,7 @@ div[class*="span"] {
 .code-header {
   height: 30px;
   background: #A4A4AE;
+  color: #000;
   border-radius: 4px 4px 0 0;
 }
 .code-editor-browser {

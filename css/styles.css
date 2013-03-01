@@ -246,6 +246,7 @@ div[class*="span"] {
   height: 64px;
   background: #1f1f27;
   box-shadow: 0 5px 10px rgba(0,0,0,.05);
+  z-index: 2;
 }
 .header a{ color: #a2a2ba;
   -webkit-transition: all 0.15s ease;
@@ -336,6 +337,29 @@ div[class*="span"] {
   background-color: rgb(255, 219, 0);
   color: #1f1f27;
 }
+
+
+/* Try it live! */
+
+.try-it-live {
+  font-size: 18px;
+  color: #FFF;
+  background: rgba(103, 55, 165, 0.750);
+  padding: 12px 24px;
+  border-radius: 20px;
+  text-align: center;
+  position: relative;
+  top: 36px;
+  left: 70px;
+  z-index: 1;
+}
+
+.try-it-live:hover {
+  background: rgba(114, 53, 192, 0.750);
+}
+
+
+/* Code Editor */
 
 .code-editor {
   /* background: #DEDEEB; */

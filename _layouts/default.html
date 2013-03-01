@@ -12,8 +12,6 @@
 </head>
 <body id="{% if page.key == 'overview' and page.subkey == null %}home{% else %}sub{% endif %}">
 
-
-
   <div class="header">
     <div class="wrapper">
       <h1 class="header-site-title"><a href="/">Batman.js</a></h1>
@@ -24,17 +22,12 @@
             <li {% if page.key == 'overview' %}class="active"{% endif %}><a href="/">Overview</a></li>
             <li {% if page.key == 'examples' %}class="active"{% endif %}><a href="/examples.html">Guides</a></li>
             <li><a href="/docs/batman.html">Documentation</a></li>
-            <li class="nav-top-highlight {% if page.key == 'download' %}active{% endif %}"><a href="/download.html">Download</a>
-            </li>
-            <li><a href="https://github.com/shopify/batman"><i class="ico-github"></i></a></li>
-            <li><a href="https://twitter.com/batmanjs"><i class="ico-twitter"></i></a></li>
+            <li class="nav-top-highlight {% if page.key == 'download' %}active{% endif %}"><a href="/download.html">Download</a></li>
           </ul>
         </nav>
       </div>
     </div><!-- /.header -->
   </div>
-
-
 
   <!-- Begin content-wrapper -->
   <div id="content-wrapper">
@@ -74,14 +67,10 @@
   </div>
 </div>
 
-
-
   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 
   <script type="text/javascript" src="/js/scripts.js"></script>
   <script type="text/javascript" src="/js/jquery.tweet.js"></script>
-  <script type="text/javascript" src="/js/jquery.fancybox-1.3.4.js"></script>
-  <script type="text/javascript" src="/js/jquery.easing-1.3.pack.js"></script>
 
   <script type="text/javascript">
     var _gaq = _gaq || [];

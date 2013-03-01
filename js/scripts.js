@@ -1,28 +1,20 @@
-// Begin dynamically add icon to external links //
-$(document).ready(function() {
-  $('#sub #content-column-wrapper a, #sub #content-column-wrapper-full a, ').filter(function() {
-    return this.hostname && this.hostname !== location.hostname;
-  }).after('<img style="padding: 0 2px 0 3px;" src="/images/icon-external-link.png" alt="external link"/>');
-});
-
-// Begin fancybox //
 $(document).ready(function() {
 
-    /* This is basic - uses default settings */
-    $("a#fancybox-image").fancybox();
-    
-    /* Using custom settings */
-    $("a#fancybox-content").fancybox({
-    	'hideOnContentClick': true
+    $(".code-editor").click(function(){
+        $(".intro").addClass('expanded').css({height:920});
     });
-    
-    /* Apply fancybox to multiple items */
-    $("a.fancybox-group").fancybox({
-    	'transitionIn'	:	'elastic',
-    	'transitionOut'	:	'elastic',
-    	'speedIn'		:	600, 
-    	'speedOut'		:	200, 
-    	'overlayShow'	:	false
+
+    $(".code-editor-browser ul li a").click(function(){
+        $(this).next('ul').slideToggle(250);
     });
-    
+
+    $(".code-editor").hover(function(){
+        if(!$('.intro').hasClass('expanded')) {
+            $(".intro").css({height:402});
+        }
+    },function(){
+        if(!$('.intro').hasClass('expanded')) {
+            $(".intro").css({height:382});
+        }
+    });
 });

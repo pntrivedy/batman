@@ -23,7 +23,6 @@ a:hover { color: #fff; }
 
 /* layout */
 .row {
-  padding: 50px 0;
   margin-left: -20px;
 }
 div[class*="span"] {
@@ -60,7 +59,7 @@ div[class*="span"] {
   width: 980px;
   margin: 0 auto;
 }
-.alt-row { background: #ebebf9; }
+.alt-row { background: #EAEBFA; }
 .plain-row { background: #fff;}
 
 .alt-row, .plain-row { color: #171722; }
@@ -192,7 +191,6 @@ div[class*="span"] {
   width: 100%;
   height: 64px;
   background: #1f1f27;
-  border-bottom: solid 1px #36363d;
   box-shadow: 0 5px 10px rgba(0,0,0,.15);
 }
 .header a{ color: #a2a2ba;
@@ -213,31 +211,33 @@ div[class*="span"] {
 .header-site-title a{
   color: #fff;
   text-decoration: none;
-  line-height: 70px;
+  line-height: 66px;
 }
 
 /* header > nav */
 .header-nav { float: right; }
-.nav-primary a{
+.nav-primary a {
   display: block;
   height: 64px;
-  line-height: 70px;
+  line-height: 67px;
   box-sizing: border-box;
   text-align: center;
-  padding: 0 10px;
-  border-right: solid 1px #36363d;
+  padding: 0 20px;
   text-transform: uppercase;
   font-size: 14px;
   text-decoration: none;
 }
-.nav-primary .nav-top-highlight { background: #27272f;}
+.nav-primary .nav-top-highlight {  }
+.nav-top-highlight a { color: #FFF; line-height: 34px; background: #DBB500; height: 32px; margin: 16px 0 0 20px; border-radius: 4px; }
 .nav-primary li { float: left; }
 .nav-primary li:first-child a{
-  border-left: solid 1px #36363d;
 }
 .nav-primary a:hover{
   background: #2a2a32;
   color: #fff;
+}
+.nav-top-highlight a:hover {
+
 }
 
 .subnav { margin-right: 20px; }
@@ -250,24 +250,86 @@ div[class*="span"] {
 /* homepage mega intro block */
 .intro {
   background: #111119 url(../images/skyline.png) 0 100% repeat-x;
-  height: 390px;
   color: #a2a1ba;
+  height: 382px;
+  overflow: hidden;
+  -webkit-transition: height 0.7s cubic-bezier(0.860, 0.000, 0.070, 1.000);
 }
-.intro h2{ }
 
-.welcome-download {
-  background: #fff;
-  color: #3c3c60;
-  font: 13px helvetica, arial, sans-serif;
+.intro h2 { font-size: 36px; color: #fff; line-height: 1.2em; text-align: center; }
+.intro h3 { font-size: 18px; line-height: 1.3em; text-align: center; }
+
+.intro-message {
+  margin-top: 80px;
+  margin-bottom: 80px;
 }
-.welcome-download .title { color: #a2a1ba; }
-.welcome-download .ico-download{ float: right; }
-.welcome-download a{ color: #3c3c60; }
-.welcome-download a:hover{ color: #08080f; }
 
-.welcome-msg h2 { font-size: 36px; color: #fff; line-height: 1.2em; }
-.welcome-msg h3 { font-size: 18px; line-height: 1.3em; }
+.code-editor {
+  background: #DEDEEB;
+  height: 400px;
+  margin: 0 0 20px 0;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.code-header {
+  height: 30px;
+  background: #A4A4AE;
+  border-radius: 4px 4px 0 0;
+}
+.code-editor-browser {
+  width: 293px;
+  height: 330px;
+  float: left;
+  padding: 20px 0;
+  overflow: hidden;
+}
+.code-editor-browser ul {
+  margin: 0 0 0 20px;
+  font-size: 14px;
+  line-height: 20px;
+}
 
+.code-editor-text {
+  background: #CCCCD9;
+  width: 607px;
+  height: 290px;
+  float: right;
+  padding: 40px;
+  border-radius: 0 0 4px 0;
+}
+.code-terminal-text {
+  padding: 20px;
+}
+.code-editor-text pre, .code-terminal-text pre {
+  font-family: monospace;
+  font-size: 16px;
+  line-height: 18px;
+  color: #3B3B41;
+}
+.code-terminal-text pre {
+  color: #CCCCD9;
+}
+.code-terminal {
+  background: #3B3B41;
+  height: 140px;
+}
+
+.download-now {
+  margin-bottom: 20px;
+}
+
+.download-now a {
+  background: #F2D000;
+  padding: 24px;
+  text-align: center;
+  color: #000;
+  display: block;
+}
+
+
+.alt-row .row {
+  padding: 60px 0;
+}
 
 /* homepage > demo feature */
 .demo .files { width: 150px; padding: 15px; }

@@ -23,6 +23,9 @@ class Try.LayoutView extends Batman.View
 		else
 			@set 'currentFile', file
 
+	@accessor 'currentStep', ->
+		Try.get('steps.first')
+
 class Try.File extends Batman.Model
 	@encode 'name', 'content', 'isDirectory'
 
@@ -44,7 +47,32 @@ class Try.FileView extends Batman.View
 	</div>
 	"""
 
+class Try.Step extends Batman.Object
+
+class Try.ConsoleStep extends Try.Step
+	isConsole: true
+
+class Try.CodeStep extends Try.Step
+	isCode: true
+
+	@expect: (regex, options) ->
+
+
+class Try.InitializeAppStep extends Try.CodeStep
+	heading: "Welcome to Batman!"
+	body: "Let's build an app. We've created a brand new Rails app for you."
+	task: "Start off by adding `batman-rails` to your gemfile."
+
+	@expect /gem\w[\"\']batman\-rails[\"\']/, in: 'Gemfile'
+
+
 files = new Batman.Set(new Try.File(name: 'rdio', isDirectory: true))
 Try.set('files', files)
+
+steps = new Batman.Set(
+	new Try.InitializeAppStep
+)
+
+Try.set('steps', steps)
 
 Try.run()

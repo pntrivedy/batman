@@ -102,6 +102,10 @@ class Try.CodeStep extends Try.Step
 	isCode: true
 
 	start: ->
+		if filename = @focusFile
+			file = Try.File.findByName(filename)
+			file.show()
+
 		if filename = @options?.in
 			file = Try.File.findByName(filename)
 			file.observe 'value', (value) =>
@@ -112,12 +116,16 @@ class Try.CodeStep extends Try.Step
 		this::regex = regex
 		this::options = options
 
+	@focus: (name) ->
+		this::focusFile = name
+
 class Try.GemfileStep extends Try.CodeStep
 	heading: "Welcome to Batman!"
 	body: "Let's build an app. We've created a brand new Rails app for you."
 	task: "Start off by adding `batman-rails` to your gemfile, and press Cmd+S when you're done."
 
 	@expect /gem\s*[\"|\']batman\-rails[\"|\']/, in: 'Gemfile'
+	@focus 'Gemfile'
 
 class Try.GenerateAppStep extends Try.ConsoleStep
 	heading: "Great! We've run `bundle install` for you."
@@ -125,6 +133,9 @@ class Try.GenerateAppStep extends Try.ConsoleStep
 	task: "Run `rails generate batman:app` from the console, and press enter to submit the command."
 
 	@expect /rails\s*[g|generate]\s*batman:app/
+
+class Try.ExploreStep extends Try.CodeStep
+
 
 steps = new Batman.Set(
 	new Try.GemfileStep

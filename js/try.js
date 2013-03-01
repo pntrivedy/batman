@@ -210,6 +210,10 @@
     CodeStep.prototype.start = function() {
       var file, filename, _ref,
         _this = this;
+      if (filename = this.focusFile) {
+        file = Try.File.findByName(filename);
+        file.show();
+      }
       if (filename = (_ref = this.options) != null ? _ref["in"] : void 0) {
         file = Try.File.findByName(filename);
         return file.observe('value', function(value) {
@@ -223,6 +227,10 @@
     CodeStep.expect = function(regex, options) {
       this.prototype.regex = regex;
       return this.prototype.options = options;
+    };
+
+    CodeStep.focus = function(name) {
+      return this.prototype.focusFile = name;
     };
 
     return CodeStep;
@@ -247,6 +255,8 @@
       "in": 'Gemfile'
     });
 
+    GemfileStep.focus('Gemfile');
+
     return GemfileStep;
 
   })(Try.CodeStep);
@@ -270,6 +280,18 @@
     return GenerateAppStep;
 
   })(Try.ConsoleStep);
+
+  Try.ExploreStep = (function(_super) {
+
+    __extends(ExploreStep, _super);
+
+    function ExploreStep() {
+      return ExploreStep.__super__.constructor.apply(this, arguments);
+    }
+
+    return ExploreStep;
+
+  })(Try.CodeStep);
 
   steps = new Batman.Set(new Try.GemfileStep, new Try.GenerateAppStep);
 

@@ -81,16 +81,22 @@ class Try.Step extends Batman.Object
 	next: ->
 		array = steps.toArray()
 		index = array.indexOf(this)
-		array[index + 1].activate()
+		step = array[index + 1]
+		step.activate?()
 
 
 class Try.ConsoleStep extends Try.Step
 	isConsole: true
 
 	start: ->
+		$('#terminal-field').focus()
 
 	@expect: (regex) ->
 		this::regex = regex
+
+	check: (value) ->
+		if @regex.test(value)
+			@next()
 
 class Try.CodeStep extends Try.Step
 	isCode: true
@@ -129,3 +135,7 @@ Try.set('steps', steps)
 Try.File.load ->
 	Try.run()
 	steps.get('first').activate()
+
+	$('#terminal-field').on 'keydown', (e) ->
+		if e.keyCode == 13
+			Try.get('currentStep')?.check(@value)

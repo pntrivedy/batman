@@ -10,7 +10,9 @@
 
   $('<script src="js/codemirror.js"></script>').appendTo('head');
 
-  $('<script src="js/modes/javascript.js"></script>').appendTo('head');
+  $('<script src="js/modes/coffeescript.js"></script>').appendTo('head');
+
+  $('<script src="js/modes/ruby.js"></script>').appendTo('head');
 
   $('<link rel="stylesheet" href="css/codemirror.css" />').appendTo('head');
 
@@ -93,11 +95,14 @@
       return new Batman.Request({
         url: "/app_files/1.json?path=" + (this.get('id')),
         success: function(data) {
+          var mode;
           _this.fromJSON(data);
           if (!_this.cm) {
             _this.node = $('<div></div>');
+            mode = _this.get('name').indexOf('.coffee') !== -1 ? 'coffeescript' : 'ruby';
+            console.log(mode);
             _this.cm = CodeMirror(_this.node[0], {
-              mode: 'javascript',
+              mode: mode,
               lineNumbers: true
             });
           }
@@ -119,7 +124,7 @@
       return FileView.__super__.constructor.apply(this, arguments);
     }
 
-    FileView.prototype.html = "<a data-bind=\"file.name\" data-event-click=\"showFile | withArguments file\" class=\"file\" data-addclass-directory=\"file.isDirectory\"></a>\n<ul data-showif=\"file.isDirectory | and file.isExpanded\" data-renderif=\"file.isDirectory\">\n	<li data-foreach-file=\"file.children\">\n		<div data-view=\"FileView\"></div>\n	</li>\n</ul>";
+    FileView.prototype.html = "<a data-bind=\"file.name\" data-event-click=\"showFile | withArguments file\" class=\"file\" data-addclass-directory=\"file.isDirectory\" data-addclass-active=\"currentFile | equals file\" data-addclass-expanded=\"file.isExpanded\"></a>\n<ul data-showif=\"file.isDirectory | and file.isExpanded\" data-renderif=\"file.isDirectory\">\n	<li data-foreach-file=\"file.children\">\n		<div data-view=\"FileView\"></div>\n	</li>\n</ul>";
 
     return FileView;
 

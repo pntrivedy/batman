@@ -11,9 +11,6 @@ test "pathFromLocation(window.location) returns the app-relative path", ->
   equal @nav.pathFromLocation(hash: '#'), '/'
   equal @nav.pathFromLocation(hash: ''), '/'
 
-# we make this test async simply to be a good citizen. the hashchange handler doesn't fire
-# synchronously, so if any other tests are added that call navigator.start, they will
-# potentially receive the hashchange callback from THIS test.
 asyncTest "pushState(stateObject, title, path) sets window.location.hash", ->
   @nav.pushState(null, '', '/foo/bar')
   delay =>
@@ -61,14 +58,14 @@ test "handleLocation(window.location) handles the real non-hashbang path, and pe
     hash: '#layout/theme.liquid'
     replace: createSpy()
 
-  # We need to go from test.com/baz#layout/theme.liquid to test.com/#!/baz but somehow include #layout/theme.liquid
+  # We need to go from test.html/baz#layout/theme.liquid to test.html/#!/baz but somehow include #layout/theme.liquid
   # The first checkInitialHash will observe that we have an extra hash and the first handle location will redirect from
   # the pushState URL to the new hashbang URL, and include an extra bit in the URL with the initial hash information.
   @nav.checkInitialHash(location)
   @nav.handleLocation(location)
   equal location.replace.callCount, 1
 
-  # Ok, we're now in hashbang land: test.com/#!/baz##BATMAN##layout/theme.liquid
+  # Ok, we're now in hashbang land: test.html/#!/baz##BATMAN##layout/theme.liquid
   path = location.replace.lastCallArguments[0]
   index = path.indexOf('#')
   location.pathname = path.substr(0, index)
@@ -80,7 +77,7 @@ test "handleLocation(window.location) handles the real non-hashbang path, and pe
   equal location.replace.callCount, 2
   equal @nav.initialHash, 'layout/theme.liquid'
 
-  # After one page reload and one URL replace, we're now at test.com/#!/baz
+  # After one page reload and one URL replace, we're now at test.html/#!/baz
   path = location.replace.lastCallArguments[0]
   index = path.indexOf('#')
   location.pathname = path.substr(0, index)

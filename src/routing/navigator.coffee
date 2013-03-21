@@ -15,23 +15,15 @@ class Batman.Navigator
     @startWatching()
     Batman.currentApp.prevent 'ready'
     Batman.setImmediate =>
-      if @started && Batman.currentApp
-        @checkInitialHash()
-        @handleCurrentLocation()
-        Batman.currentApp.allowAndFire 'ready'
+      @afterStart() if @started && Batman.currentApp
+
+  afterStart: ->
+    @handleCurrentLocation()
+    Batman.currentApp.allowAndFire 'ready'
 
   stop: ->
     @stopWatching()
     @started = no
-
-  checkInitialHash: (location=window.location) ->
-    prefix = Batman.HashbangNavigator::hashPrefix
-    hash = location.hash
-    if hash.length > prefix.length and hash.substr(0, prefix.length) != prefix
-      @initialHash = hash.substr(prefix.length - 1)
-    else if (index = hash.indexOf("##BATMAN##")) != -1
-      @initialHash = hash.substr(index + 10)
-      @replaceState(null, '', hash.substr(prefix.length, index - prefix.length), location)
 
   handleCurrentLocation: => @handleLocation(window.location)
   handleLocation: (location) ->

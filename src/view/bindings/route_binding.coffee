@@ -13,6 +13,8 @@ class Batman.DOM.RouteBinding extends Batman.DOM.AbstractBinding
 
     super
 
+    return if @onAnchorTag && @node.getAttribute('target')
+
     Batman.DOM.events.click @node, (node, event) =>
       return if event.__batmanActionTaken
       event.__batmanActionTaken = true

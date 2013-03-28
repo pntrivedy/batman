@@ -65,7 +65,6 @@ Batman.Request::_prepareOptions = (data) ->
       @fire 'loaded'
 
   if @get('method') in ['PUT', 'POST']
-
     unless @hasFileUploads()
       options.contentType = @get 'contentType'
       if typeof options.data is 'object'
@@ -75,6 +74,9 @@ Batman.Request::_prepareOptions = (data) ->
       options.contentType = false
       options.processData = false
       options.data = @constructor.objectToFormData(options.data)
+
+  if extraOptions = @get('options')
+    Batman.mixin(options, extraOptions)
 
   options
 

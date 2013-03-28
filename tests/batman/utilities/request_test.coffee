@@ -94,6 +94,17 @@ asyncTest 'should set headers', 2, ->
     notEqual req.headers.test_header, undefined
     equal req.headers.test_header, 'test-value'
 
+test 'should allow you to pass additional platform options', ->
+  req = new Batman.Request
+    url: 'some/test/url.html'
+    options:
+      cache: true
+
+  if req._prepareOptions # the node adapter isn't actually capable of taking options
+    equal req._prepareOptions().cache, true
+  else
+    ok true
+
 old = {}
 for key in ['FormData', 'File']
   old[key] = Batman.container[key] || {}

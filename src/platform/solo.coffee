@@ -52,8 +52,11 @@ Batman.Request::send = (data) ->
   else
     options.data = data
 
+  if extraOptions = @get('options')
+    Batman.mixin(options, extraOptions)
+
   # Fires the request. Grab a reference to the xhr object so we can get the status code elsewhere.
-  xhr = (reqwest options).request
+  xhr = reqwest(options).request
 
 prefixes = ['Webkit', 'Moz', 'O', 'ms', '']
 Batman.mixins.animation =

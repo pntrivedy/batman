@@ -70,12 +70,16 @@ class Batman.DOM.IteratorBinding extends Batman.DOM.AbstractCollectionBinding
           continue
         else
           # Otherwise, create a new or move the existing node for that position to the desired position
-          node = if (existingNode = @nodeMap.get(newItem))
+          if (existingNode = @nodeMap.get(newItem))
             unseenNodeMap.unset(newItem)
-            existingNode
+            node = existingNode
+            newNode = false
           else
-            @_newNodeForItem(newItem)
+            node = @_newNodeForItem(newItem)
+            newNode = true
+
           Batman.DOM.insertBefore @parentNode(), node, nodeAtIndex
+          @_notifyParentsOfNodeAddition(node) if newNode
 
     unseenNodeMap.forEach (item, node) =>
       if @_nodesToBeRendered.has(node)
@@ -103,13 +107,10 @@ class Batman.DOM.IteratorBinding extends Batman.DOM.AbstractCollectionBinding
       if @_nodesToBeRemoved?.has(newNode)
         @_nodesToBeRemoved.remove(newNode)
         @_removeItem(newItem)
-      else
-        Batman.DOM.propagateBindingEvents(newNode)
-        @fire 'nodeAdded', newNode, newItem
 
       @parentRenderer.allowAndFire 'rendered'
 
-    newNode
+    return newNode
 
   _getStartNodeIndex: ->
     # Get start index
@@ -123,6 +124,10 @@ class Batman.DOM.IteratorBinding extends Batman.DOM.AbstractCollectionBinding
 
     Batman.DOM.destroyNode(node)
     @fire 'nodeRemoved', node, item
+
+  _notifyParentsOfNodeAddition: (newNode) ->
+    Batman.DOM.propagateBindingEvents(newNode)
+    @fire('nodeAdded', newNode)
 
   die: ->
     # ensure any remaining un-rendered nodes are removed once rendering is complete

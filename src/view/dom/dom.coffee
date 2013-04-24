@@ -25,7 +25,7 @@ Batman.DOM =
       source: path
       context: context
 
-    view.on 'ready', ->
+    view.once 'ready', ->
       Batman.DOM.setInnerHTML container, ''
       Batman.DOM.appendChild container, view.get('node')
       renderer.allowAndFire 'rendered'

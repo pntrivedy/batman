@@ -68,6 +68,7 @@ Batman.DOM.readers =
 
   partial: (definition) ->
     Batman.DOM.partial definition.node, definition.keyPath, definition.context, definition.renderer
+    {skipChildren: true}
 
   defineview: (definition) ->
     {node} = definition

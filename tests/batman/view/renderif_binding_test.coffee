@@ -1,6 +1,7 @@
 helpers = if typeof require is 'undefined' then window.viewHelpers else require './view_helper'
 
-QUnit.module "Batman.View: data-render-if bindings",
+QUnit.module "Batman.View: data-render-if bindings"
+
 asyncTest 'it should not render the inner nodes until the keypath is truthy', 4, ->
   context = Batman
     proceed: false
@@ -10,8 +11,8 @@ asyncTest 'it should not render the inner nodes until the keypath is truthy', 4,
 
   helpers.render source, context, (node) ->
     ok !spy.called
-    context.set('proceed', true)
     equal $('span', node).html(), 'unrendered'
+    context.set('proceed', true)
     delay ->
       ok spy.called
       equal $('span', node).html(), 'inner value'

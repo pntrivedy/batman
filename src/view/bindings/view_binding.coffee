@@ -4,10 +4,10 @@ class Batman.DOM.ViewBinding extends Batman.DOM.AbstractBinding
   skipChildren: true
   onlyObserve: Batman.BindingDefinitionOnlyObserve.Data
 
-  constructor: ->
+  constructor: ({node})->
+    node.removeAttribute 'data-view'
     super
     @renderer.prevent 'rendered'
-    @node.removeAttribute 'data-view'
 
   dataChange: (viewClassOrInstance) ->
     return unless viewClassOrInstance?

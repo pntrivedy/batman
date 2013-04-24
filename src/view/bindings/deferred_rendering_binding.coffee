@@ -4,9 +4,9 @@ class Batman.DOM.DeferredRenderingBinding extends Batman.DOM.AbstractBinding
   rendered: false
   skipChildren: true
 
-  constructor: ->
+  constructor: ({node}) ->
+    node.removeAttribute "data-renderif"
     super
-    @node.removeAttribute "data-renderif"
 
   nodeChange: ->
   dataChange: (value) ->

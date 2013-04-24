@@ -23,7 +23,7 @@ asyncTest 'it should bind the value of a select box and update when the javascri
     equal node[0].value, 'link'
     QUnit.start()
 
-asyncTest 'it should bind the value of a select box and update when options change', 7, ->
+asyncTest 'it should bind the value of a select box and update the DOM land value when the JS land options change', 7, ->
   context = Batman
     heros: new Batman.Set()
     selected: new Batman.Object(name: 'crono')
@@ -35,8 +35,8 @@ asyncTest 'it should bind the value of a select box and update when options chan
       equal node[0].value, 'crono'
       deepEqual getContents(node), ['Mario', 'Link', 'Crono']
       equal context.get('selected.name'), 'crono'
-      context.set('selected.name', 'mario')
-      equal node[0].value, 'mario'
+      context.set('selected.name', 'link')
+      equal node[0].value, 'link'
       deepEqual getContents(node), ['Mario', 'Link', 'Crono']
 
 asyncTest 'it should bind the value of a select box and update the javascript land value with the selected option', 3, ->

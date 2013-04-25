@@ -149,64 +149,68 @@ Batman.DOM =
   stopPropagation: (e) ->
     if e.stopPropagation then e.stopPropagation() else e.cancelBubble = true
 
-  willInsertNode: (node) ->
-    view = Batman._data node, 'view'
-    view?.fire 'beforeAppear', node
-    Batman.DOM.willInsertNode(child) for child in node.childNodes
+  nodeAndChildren: (node) ->
+    array = Array::slice.call(Batman.DOM.querySelectorAll(node, "*"))
+    array.unshift node
+    array
+
+  willInsertNode: (root) ->
+    for node in Batman.DOM.nodeAndChildren(root)
+      view = Batman._data node, 'view'
+      view?.fire 'beforeAppear', node
     true
 
-  didInsertNode: (node) ->
-    view = Batman._data node, 'view'
-    if view
-      view.fire 'appear', node
-      view.applyYields()
-    Batman.DOM.didInsertNode(child) for child in node.childNodes
+  didInsertNode: (root) ->
+    for node in Batman.DOM.nodeAndChildren(root)
+      view = Batman._data node, 'view'
+      if view
+        view.fire 'appear', node
+        view.applyYields()
     true
 
-  willRemoveNode: (node) ->
-    view = Batman._data node, 'view'
-    if view
-      view.fire 'beforeDisappear', node
-    Batman.DOM.willRemoveNode(child) for child in node.childNodes
+  willRemoveNode: (root) ->
+    for node in Batman.DOM.nodeAndChildren(root)
+      view = Batman._data node, 'view'
+      if view
+        view.fire 'beforeDisappear', node
     true
 
-  didRemoveNode: (node) ->
-    view = Batman._data node, 'view'
-    if view
-      view.retractYields()
-      view.fire 'disappear', node
-    Batman.DOM.didRemoveNode(child) for child in node.childNodes
+  didRemoveNode: (root) ->
+    for node in Batman.DOM.nodeAndChildren(root)
+      view = Batman._data node, 'view'
+      if view
+        view.retractYields()
+        view.fire 'disappear', node
     true
 
-  willDestroyNode: (node) ->
-    view = Batman._data node, 'view'
-    if view
-      view.fire 'beforeDestroy', node
-      view.get('yields').forEach (name, actions) ->
-        for {node} in actions
-          Batman.DOM.willDestroyNode(node)
-    Batman.DOM.willDestroyNode(child) for child in node.childNodes
+  willDestroyNode: (root) ->
+    for node in Batman.DOM.nodeAndChildren(root)
+      view = Batman._data node, 'view'
+      if view
+        view.fire 'beforeDestroy', node
+        view.get('yields').forEach (name, actions) ->
+          for {node} in actions
+            Batman.DOM.willDestroyNode(node)
     true
 
-  didDestroyNode: (node) ->
-    view = Batman._data node, 'view'
-    if view
-      view.die()
+  didDestroyNode: (root) ->
+    for node in Batman.DOM.nodeAndChildren(root)
+      view = Batman._data node, 'view'
+      if view
+        view.die()
 
-    # break down all bindings
-    if bindings = Batman._data node, 'bindings'
-      bindings.forEach (binding) -> binding.die()
+      # break down all bindings
+      if bindings = Batman._data node, 'bindings'
+        bindings.forEach (binding) -> binding.die()
 
-    # remove all event listeners
-    if listeners = Batman._data node, 'listeners'
-      for eventName, eventListeners of listeners
-        eventListeners.forEach (listener) ->
-          Batman.DOM.removeEventListener node, eventName, listener
+      # remove all event listeners
+      if listeners = Batman._data node, 'listeners'
+        for eventName, eventListeners of listeners
+          eventListeners.forEach (listener) ->
+            Batman.DOM.removeEventListener node, eventName, listener
 
     # remove all bindings and other data associated with this node
     Batman.removeData node, null, null, true  # internal and external data (Batman._data and Batman.data)
-
-    Batman.DOM.didDestroyNode(child) for child in node.childNodes
     true
 
 Batman.mixin Batman.DOM, Batman.EventEmitter, Batman.Observable

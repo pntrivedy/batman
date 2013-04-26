@@ -5,7 +5,7 @@ class Batman.DOM.InsertionBinding extends Batman.DOM.AbstractBinding
 
   constructor: (definition) ->
     {@invert} = definition
-    @placeholderNode = document.createComment "detached node #{@get('_batmanID')}"
+    @placeholderNode = Batman.DOM.createPlaceholderNode("detached node #{@get('_batmanID')}")
 
     super
 

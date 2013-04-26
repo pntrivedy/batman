@@ -18,6 +18,12 @@ Batman.DOM =
   scrollIntoView: (elementID) ->
     document.getElementById(elementID)?.scrollIntoView?()
 
+  createPlaceholderNode: (identifier) ->
+    node = document.createElement("script")
+    Batman.developer.do ->
+      node.setAttribute "data-identifier", identifier
+    node
+
   partial: (container, path, context, renderer) ->
     renderer.prevent 'rendered'
 

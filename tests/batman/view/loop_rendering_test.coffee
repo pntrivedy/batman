@@ -97,7 +97,7 @@ asyncTest 'the ready event should wait for all children to be rendered', ->
     ok !view.event('ready').oneShotFired, 'make sure parsed fires before rendered'
   view.on 'ready', =>
     tracking = {foo: false, bar: false, baz: false}
-    node = $(view.get('node')).children()
+    node = $(view.get('node')).children('p')
     for i in [0...node.length]
       tracking[node[i].innerHTML] = true
       equal node[i].className,  'present'
@@ -266,18 +266,21 @@ asyncTest 'it should update as a hash has items added and removed', 8, ->
       mario: 5
 
   helpers.render source, context, (node, view) ->
-    equal $(':first', node).attr('id'), 'mario'
-    equal $(':first', node).html(), '5'
+    first = $(node).children(":not(script)")[0]
+    equal first.id, 'mario'
+    equal first.innerHTML, '5'
     context.playerScores.set 'link', 10
     delay =>
-      equal $(':first', node).attr('id'), 'mario'
-      equal $(':first', node).html(), '5'
-      equal $(':nth-child(2)', node).attr('id'), 'link'
-      equal $(':nth-child(2)', node).html(), '10'
+      nodes = $(node).children(":not(script)")
+      equal nodes[0].id, 'mario'
+      equal nodes[0].innerHTML, '5'
+      equal nodes[1].id, 'link'
+      equal nodes[1].innerHTML, '10'
       context.playerScores.unset 'mario'
       delay =>
-        equal $(':first', node).attr('id'), 'link'
-        equal $(':first', node).html(), '10'
+        first = $(node).children(":not(script)")[0]
+        equal first.id, 'link'
+        equal first.innerHTML, '10'
 
 asyncTest 'it should loop over js objects', 6, ->
   source = '<p data-foreach-player="playerScores" class="present" data-bind-id="player" data-bind="playerScores[player]"></p>'
@@ -392,7 +395,7 @@ asyncTest 'it shouldn\'t become desynchronized with a fancy filtered style set',
           deepEqual getPs(view), ['a', 'b', 'c', 'd', 'e']
 
 getVals = (node) ->
-  parseInt(child.innerHTML, 10) for child in $(node).children()
+  parseInt(child.innerHTML, 10) for child in $(node).children(':not(script)')
 
 asyncTest 'it should stop previous ongoing renders if items are removed', ->
   getSet = (seed) -> new Batman.Set(seed, seed+1, seed+2)

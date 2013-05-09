@@ -215,8 +215,8 @@ Batman.DOM =
           eventListeners.forEach (listener) ->
             Batman.DOM.removeEventListener node, eventName, listener
 
-    # remove all bindings and other data associated with this node
-    Batman.removeData node, null, null, true  # internal and external data (Batman._data and Batman.data)
+      # remove all bindings and other data associated with this node
+      Batman.removeData node, null, null, true  # internal and external data (Batman._data and Batman.data)
     true
 
 Batman.mixin Batman.DOM, Batman.EventEmitter, Batman.Observable

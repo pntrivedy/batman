@@ -1,7 +1,7 @@
 (function() {
   var emptyNode, isDeveloperNamespace, isPropertyAccessOnDeveloperNamespace, uglify;
 
-  uglify = require('uglify-js');
+  uglify = void 0;
 
   emptyNode = function(node) {
     var newNode;
@@ -44,9 +44,10 @@
     return false;
   };
 
-  exports.removeDevelopment = function(toplevel) {
+  exports.removeDevelopment = function(toplevel, u) {
     var remover;
 
+    uglify = u;
     remover = new uglify.TreeTransformer(function(node, descend) {
       if (node instanceof uglify.AST_Definitions) {
         descend(node, this);
@@ -56,7 +57,7 @@
         if (node.definitions.length === 0) {
           return emptyNode(node);
         } else {
-          return true;
+          return node;
         }
       }
       if (node instanceof uglify.AST_Call) {
@@ -82,6 +83,8 @@
           return emptyNode(node);
         }
       }
+      descend(node, this);
+      return node;
     });
     return toplevel.transform(remover);
   };

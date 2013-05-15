@@ -1,4 +1,4 @@
-uglify = require 'uglify-js'
+uglify = undefined
 
 emptyNode = (node) ->
   newNode = new uglify.AST_EmptyStatement
@@ -32,7 +32,8 @@ isPropertyAccessOnDeveloperNamespace = (node) ->
     return isDeveloperNamespace(node.expression)
   return false
 
-exports.removeDevelopment = (toplevel) ->
+exports.removeDevelopment = (toplevel,u) ->
+  uglify = u
   remover = new uglify.TreeTransformer (node, descend) ->
     if node instanceof uglify.AST_Definitions
       descend(node, this)
@@ -40,7 +41,7 @@ exports.removeDevelopment = (toplevel) ->
       if node.definitions.length == 0
         return emptyNode(node)
       else
-        return true
+        return node
 
     if node instanceof uglify.AST_Call
       return emptyNode(node) if isPropertyAccessOnDeveloperNamespace(node.expression)
@@ -59,6 +60,7 @@ exports.removeDevelopment = (toplevel) ->
     if node instanceof uglify.AST_Conditional || node instanceof uglify.AST_If
       return emptyNode(node) if isDeveloperNamespace(node.condition) || isPropertyAccessOnDeveloperNamespace(node.condition)
 
-    return
+    descend(node,this)
+    return node
 
   return toplevel.transform(remover)

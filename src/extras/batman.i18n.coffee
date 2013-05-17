@@ -11,7 +11,7 @@ class Batman.I18N extends Batman.Object
   @translate: (key, values) ->
     translation = @get("translations.#{key}")
     if ! translation?
-      Batman.developer.warn "Warning, undefined translation #{key} when in local #{@get('locale')}"
+      Batman.developer.warn "Warning, undefined translation #{key} when in local #{@get('locale')}" if DEBUG
       return ""
     Batman.helpers.interpolate(translation, values)
 
@@ -23,7 +23,7 @@ class Batman.I18N extends Batman.Object
   @disable: ->
     Batman.translate = @_oldTranslation
 
-  constructor: -> Batman.developer.error "Can't instantiate i18n!"
+  constructor: -> Batman.developer.error "Can't instantiate i18n!" if DEBUG
 
 class Batman.I18N.LocalesStorage extends Batman.Object
   constructor: ->

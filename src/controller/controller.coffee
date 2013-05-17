@@ -8,7 +8,7 @@ class Batman.Controller extends Batman.Object
       if @routingKey?
         @routingKey
       else
-        Batman.developer.error("Please define `routingKey` on the prototype of #{Batman.functionName(@constructor)} in order for your controller to be minification safe.") if Batman.config.minificationErrors
+        Batman.developer.error("Please define `routingKey` on the prototype of #{Batman.functionName(@constructor)} in order for your controller to be minification safe.") if Batman.config.minificationErrors and DEBUG
         Batman.functionName(@constructor).replace(/Controller$/, '')
 
   @accessor '_renderContext', -> Batman.RenderContext.root().descend(@)
@@ -100,7 +100,7 @@ class Batman.Controller extends Batman.Object
     Batman.redirect(redirectTo) if redirectTo
 
   executeAction: (action, params = @get('params')) ->
-    Batman.developer.assert @[action], "Error! Controller action #{@get 'routingKey'}.#{action} couldn't be found!"
+    Batman.developer.assert @[action], "Error! Controller action #{@get 'routingKey'}.#{action} couldn't be found!" if DEBUG
 
     parentFrame = @_actionFrames[@_actionFrames.length - 1]
     frame = new Batman.ControllerActionFrame {parentFrame, action}, =>
@@ -126,12 +126,12 @@ class Batman.Controller extends Batman.Object
 
     if frame
       if frame.operationOccurred
-        Batman.developer.warn "Warning! Trying to redirect but an action has already been taken during #{@get('routingKey')}.#{frame.action || @get('action')}"
+        Batman.developer.warn "Warning! Trying to redirect but an action has already been taken during #{@get('routingKey')}.#{frame.action || @get('action')}" if DEBUG
 
       frame.startAndFinishOperation()
 
       if @_afterFilterRedirect?
-        Batman.developer.warn "Warning! Multiple actions trying to redirect!"
+        Batman.developer.warn "Warning! Multiple actions trying to redirect!" if DEBUG
       else
         @_afterFilterRedirect = url
     else

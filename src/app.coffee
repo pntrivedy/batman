@@ -34,27 +34,28 @@ class Batman.App extends Batman.Object
   # The require class methods (`controller`, `model`, `view`) simply tells
   # your app where to look for coffeescript source files. This
   # implementation may change in the future.
-  Batman.developer.do =>
-    requireDeprecated = "Please use whatever means you'd like to load your code before calling App.run."
+  if DEBUG
+    Batman.developer.do =>
+      requireDeprecated = "Please use whatever means you'd like to load your code before calling App.run."
 
-    App.require = (path, names...) ->
-      Batman.developer.deprecated("App.require", requireDeprecated)
-      base = @requirePath + path
-      for name in names
-        @prevent 'run'
+      App.require = (path, names...) ->
+        Batman.developer.deprecated("App.require", requireDeprecated)
+        base = @requirePath + path
+        for name in names
+          @prevent 'run'
 
-        path = base + '/' + name + '.coffee'
-        new Batman.Request
-          url: path
-          type: 'html'
-          success: (response) =>
-            CoffeeScript.eval response
-            @allow 'run'
-            if not @isPrevented 'run'
-              @fire 'loaded'
+          path = base + '/' + name + '.coffee'
+          new Batman.Request
+            url: path
+            type: 'html'
+            success: (response) =>
+              CoffeeScript.eval response
+              @allow 'run'
+              if not @isPrevented 'run'
+                @fire 'loaded'
 
-            @run() if @wantsToRun
-      @
+              @run() if @wantsToRun
+        @
 
     @controller = (names...) ->
       Batman.developer.deprecated("App.controller", requireDeprecated)

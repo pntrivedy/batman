@@ -1,3 +1,6 @@
+if DEBUG == false
+  return
+
 Batman.developer =
   suppressed: false
   DevelopmentError: (->

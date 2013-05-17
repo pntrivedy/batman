@@ -9,7 +9,7 @@ getAccessorObject = (base, accessor) ->
     accessor = {get: accessor}
   for deprecated in ['cachable', 'cacheable']
     if deprecated of accessor
-      Batman.developer.warn "Property accessor option \"#{deprecated}\" is deprecated. Use \"cache\" instead."
+      Batman.developer.warn "Property accessor option \"#{deprecated}\" is deprecated. Use \"cache\" instead." if DEBUG
       accessor.cache = accessor[deprecated] unless 'cache' of accessor
   accessor
 

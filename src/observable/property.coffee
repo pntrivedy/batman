@@ -157,7 +157,8 @@ class Batman.Property extends Batman.PropertyEvent
 
   sourceChangeHandler: ->
     @_sourceChangeHandler ||= @_handleSourceChange.bind(@)
-    Batman.developer.do => @_sourceChangeHandler.property = @
+    if DEBUG
+      Batman.developer.do => @_sourceChangeHandler.property = @
     @_sourceChangeHandler
 
   _handleSourceChange: ->

@@ -35,13 +35,16 @@ task 'build', 'compile Batman.js and all the tools', (options) ->
     files: files
     options: options
     map:
-      'src/batman\.coffee'            : (matches) -> muffin.compileTree(matches[0], 'lib/batman.js', options)
-      'src/platform/([^/]+)\.coffee'     : (matches) -> muffin.compileTree(matches[0], "lib/batman.#{matches[1]}.js", options) unless matches[1] == 'node'
+      'src/batman\.coffee'            : (matches) -> muffin.compileTree(matches[0], 'lib/batman.js', options).then ->
+                                                       require('fs').appendFileSync( 'lib/batman.js', 'const DEBUG=true;' )
+      'src/platform/([^/]+)\.coffee'  : (matches) -> muffin.compileTree(matches[0], "lib/batman.#{matches[1]}.js", options) unless matches[1] == 'node'
       'src/extras/(.+)\.coffee'       : (matches) -> muffin.compileTree(matches[0], "lib/extras/#{matches[1]}.js", options)
       'tests/run\.coffee'             : (matches) -> muffin.compileTree(matches[0], 'tests/run.js', options)
 
   invoke 'build:node'
   invoke 'build:tools'
+
+    
 
   if options.dist
     invoke 'build:dist'
@@ -77,6 +80,7 @@ task 'build:dist', 'compile Batman.js files for distribution', (options) ->
         return if matches[1] == 'batman.node'
         destination = "lib/dist/#{matches[1]}.js"
         muffin.compileTree(matches[0], destination).then ->
+          require('fs').appendFileSync( destination, 'const DEBUG=false;' )
           options.transform = developmentTransform
           muffin.minifyScript(destination, options).then ->
             muffin.notify(destination, "File #{destination} minified.")

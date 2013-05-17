@@ -7,7 +7,7 @@ class Batman.DOM.EventBinding extends Batman.DOM.AbstractAttributeBinding
     super
 
     if confirmText = @node.getAttribute('data-confirm')
-      Batman.developer.deprecated("data-confirm")
+      Batman.developer.deprecated("data-confirm") if DEBUG
 
     callback = =>
       return if confirmText and not confirm(confirmText)

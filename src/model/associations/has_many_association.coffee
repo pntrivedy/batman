@@ -37,7 +37,7 @@ class Batman.HasManyAssociation extends Batman.PluralAssociation
     association = @
     (data, key, _, __, parentRecord) ->
       unless relatedModel = association.getRelatedModel()
-        Batman.developer.error "Can't decode model #{association.options.name} because it hasn't been loaded yet!"
+        Batman.developer.error "Can't decode model #{association.options.name} because it hasn't been loaded yet!" if DEBUG
         return
 
       existingRelations = association.setForRecord(parentRecord)

@@ -64,4 +64,4 @@ class Batman.Request extends Batman.Object
 
   # `send` is implemented in the platform layer files. One of those must be required for
   # `Batman.Request` to be useful.
-  send: -> Batman.developer.error "Please source a dependency file for a request implementation"
+  send: -> Batman.developer.error "Please source a dependency file for a request implementation" if DEBUG

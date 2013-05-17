@@ -28,9 +28,10 @@ class Batman.PolymorphicHasManyAssociation extends Batman.HasManyAssociation
       relatedModel ||= scope?[Batman.helpers.camelize(type)]
     else
       relatedModel = @getRelatedModel()
-    Batman.developer.do ->
-      if Batman.currentApp? and not relatedModel
-        Batman.developer.warn "Related model #{type} for polymorphic association not found."
+    if DEBUG
+      Batman.developer.do ->
+        if Batman.currentApp? and not relatedModel
+          Batman.developer.warn "Related model #{type} for polymorphic association not found." if DEBUG
     relatedModel
 
   modelType: -> @model.get('resourceName')
@@ -61,7 +62,7 @@ class Batman.PolymorphicHasManyAssociation extends Batman.HasManyAssociation
       for jsonObject in data
         type = jsonObject[association.options.foreignTypeKey];
         unless relatedModel = association.getRelatedModelForType(type)
-          Batman.developer.error "Can't decode model #{association.options.name} because it hasn't been loaded yet!"
+          Batman.developer.error "Can't decode model #{association.options.name} because it hasn't been loaded yet!" if DEBUG
           return
 
         id = jsonObject[relatedModel.primaryKey]

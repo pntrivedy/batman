@@ -113,7 +113,7 @@ Batman.Filters =
     value[0]
 
   meta: buntUndefined (value, keypath) ->
-    Batman.developer.assert value.meta, "Error, value doesn't have a meta to filter on!"
+    Batman.developer.assert value.meta, "Error, value doesn't have a meta to filter on!" if DEBUG
     value.meta.get(keypath)
 
   interpolate: (string, interpolationKeypaths, binding) ->
@@ -125,7 +125,7 @@ Batman.Filters =
     for k, v of interpolationKeypaths
       values[k] = @get(v)
       if !values[k]?
-        Batman.developer.warn "Warning! Undefined interpolation key #{k} for interpolation", string
+        Batman.developer.warn "Warning! Undefined interpolation key #{k} for interpolation", string if DEBUG
         values[k] = ''
 
     Batman.helpers.interpolate(string, values)
@@ -146,4 +146,4 @@ do ->
   for k in ['capitalize', 'singularize', 'underscore', 'camelize']
     Batman.Filters[k] = buntUndefined Batman.helpers[k]
 
-Batman.developer.addFilters()
+Batman.developer.addFilters() if DEBUG

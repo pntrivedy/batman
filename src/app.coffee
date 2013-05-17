@@ -34,7 +34,7 @@ class Batman.App extends Batman.Object
   # The require class methods (`controller`, `model`, `view`) simply tells
   # your app where to look for coffeescript source files. This
   # implementation may change in the future.
-  if DEBUG
+  if BATMAN_DEBUG
     Batman.developer.do =>
       requireDeprecated = "Please use whatever means you'd like to load your code before calling App.run."
 

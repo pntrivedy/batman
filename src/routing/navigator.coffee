@@ -65,10 +65,10 @@ class Batman.Navigator
     path
 
   push: (params) ->
-    Batman.developer.deprecated("Navigator::push", "Please use Batman.redirect({}) instead.") if DEBUG
+    Batman.developer.deprecated("Navigator::push", "Please use Batman.redirect({}) instead.") if BATMAN_DEBUG
     @redirect(params)
   replace: (params) ->
-    Batman.developer.deprecated("Navigator::replace", "Please use Batman.redirect({}, true) instead.") if DEBUG
+    Batman.developer.deprecated("Navigator::replace", "Please use Batman.redirect({}, true) instead.") if BATMAN_DEBUG
     @redirect(params, true)
 
   normalizePath: (segments...) ->

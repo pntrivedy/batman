@@ -36,7 +36,7 @@ task 'build', 'compile Batman.js and all the tools', (options) ->
     options: options
     map:
       'src/batman\.coffee'            : (matches) -> muffin.compileTree(matches[0], 'lib/batman.js', options).then ->
-                                                       require('fs').appendFileSync( 'lib/batman.js', 'const DEBUG=true;' )
+                                                       require('fs').appendFileSync( 'lib/batman.js', 'const BATMAN_DEBUG=true;' )
       'src/platform/([^/]+)\.coffee'  : (matches) -> muffin.compileTree(matches[0], "lib/batman.#{matches[1]}.js", options) unless matches[1] == 'node'
       'src/extras/(.+)\.coffee'       : (matches) -> muffin.compileTree(matches[0], "lib/extras/#{matches[1]}.js", options)
       'tests/run\.coffee'             : (matches) -> muffin.compileTree(matches[0], 'tests/run.js', options)
@@ -62,7 +62,8 @@ task 'build:node', 'compile node distribution of Batman.js', (options) ->
     files: './src/dist/*'
     options: options
     map:
-      'src/dist/batman\.node\.coffee' : (matches) -> debugger; muffin.compileTree(matches[0], 'lib/dist/batman.node.js', options)
+      'src/dist/batman\.node\.coffee' : (matches) -> debugger; muffin.compileTree(matches[0], 'lib/dist/batman.node.js', options).then ->
+        require('fs').appendFileSync( 'lib/dist/batman.node.js', 'const BATMAN_DEBUG=false;' )
 
 task 'build:dist', 'compile Batman.js files for distribution', (options) ->
   temp    = require 'temp'
@@ -80,7 +81,7 @@ task 'build:dist', 'compile Batman.js files for distribution', (options) ->
         return if matches[1] == 'batman.node'
         destination = "lib/dist/#{matches[1]}.js"
         muffin.compileTree(matches[0], destination).then ->
-          require('fs').appendFileSync( destination, 'const DEBUG=false;' )
+          require('fs').appendFileSync( destination, 'const BATMAN_DEBUG=false;' )
           options.transform = developmentTransform
           muffin.minifyScript(destination, options).then ->
             muffin.notify(destination, "File #{destination} minified.")

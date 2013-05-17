@@ -38,7 +38,7 @@ class Batman.NamedRouteQuery extends Batman.Object
     if map = @get('routeMap').childrenByName[key]
       return new Batman.NamedRouteQuery(map, @args)
     else
-      Batman.developer.error "Couldn't find a route for the name #{key}!" if DEBUG
+      Batman.developer.error "Couldn't find a route for the name #{key}!" if BATMAN_DEBUG
 
   nextQueryWithArgument: (arg) ->
     args = @args.slice(0)

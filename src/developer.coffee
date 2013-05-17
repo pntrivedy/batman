@@ -1,4 +1,4 @@
-if DEBUG == false
+if BATMAN_DEBUG == false
   return
 
 Batman.developer =

@@ -76,10 +76,10 @@ class Batman.Model extends Batman.Object
       if @resourceName?
         @resourceName
       else if @::resourceName?
-        Batman.developer.error("Please define the resourceName property of the #{Batman.functionName(@)} on the constructor and not the prototype.") if Batman.config.minificationErrors and DEBUG
+        Batman.developer.error("Please define the resourceName property of the #{Batman.functionName(@)} on the constructor and not the prototype.") if Batman.config.minificationErrors and BATMAN_DEBUG
         @::resourceName
       else
-        Batman.developer.error("Please define #{Batman.functionName(@)}.resourceName in order for your model to be minification safe.") if Batman.config.minificationErrors and DEBUG
+        Batman.developer.error("Please define #{Batman.functionName(@)}.resourceName in order for your model to be minification safe.") if Batman.config.minificationErrors and BATMAN_DEBUG
         Batman.helpers.underscore(Batman.functionName(@))
 
   @classAccessor 'all',
@@ -110,7 +110,7 @@ class Batman.Model extends Batman.Object
     @findWithOptions(id, undefined, callback)
 
   @findWithOptions: (id, options = {}, callback) ->
-    Batman.developer.assert callback, "Must call find with a callback!" if DEBUG
+    Batman.developer.assert callback, "Must call find with a callback!" if BATMAN_DEBUG
     record = new @()
     record._withoutDirtyTracking -> @set 'id', id
     record.loadWithOptions options, callback
@@ -186,7 +186,7 @@ class Batman.Model extends Batman.Object
     return records
 
   @_doStorageOperation: (operation, options, callback) ->
-    Batman.developer.assert @::hasStorage(), "Can't #{operation} model #{Batman.functionName(@constructor)} without any storage adapters!" if DEBUG
+    Batman.developer.assert @::hasStorage(), "Can't #{operation} model #{Batman.functionName(@constructor)} without any storage adapters!" if BATMAN_DEBUG
     adapter = @::_batman.get('storage')
     adapter.perform(operation, @, options, callback)
 
@@ -231,7 +231,7 @@ class Batman.Model extends Batman.Object
   # New records can be constructed by passing either an ID or a hash of attributes (potentially
   # containing an ID) to the Model constructor. By not passing an ID, the model is marked as new.
   constructor: (idOrAttributes = {}) ->
-    Batman.developer.assert  @ instanceof Batman.Object, "constructors must be called with new" if DEBUG
+    Batman.developer.assert  @ instanceof Batman.Object, "constructors must be called with new" if BATMAN_DEBUG
 
     # Find the ID from either the first argument or the attributes.
     if Batman.typeOf(idOrAttributes) is 'Object'
@@ -325,7 +325,7 @@ class Batman.Model extends Batman.Object
     if @constructor.primaryKey isnt 'id'
       obj.id = data[@constructor.primaryKey]
 
-    if DEBUG
+    if BATMAN_DEBUG
       Batman.developer.do =>
         if (!encoders) || encoders.length <= 1
           Batman.developer.warn "Warning: Model #{Batman.functionName(@constructor)} has suspiciously few decoders!"
@@ -472,7 +472,7 @@ class Batman.Model extends Batman.Object
       false
 
   _doStorageOperation: (operation, options, callback) ->
-    Batman.developer.assert @hasStorage(), "Can't #{operation} model #{Batman.functionName(@constructor)} without any storage adapters!" if DEBUG
+    Batman.developer.assert @hasStorage(), "Can't #{operation} model #{Batman.functionName(@constructor)} without any storage adapters!" if BATMAN_DEBUG
     adapter = @_batman.get('storage')
     adapter.perform operation, @, options, =>
       callback(arguments...)

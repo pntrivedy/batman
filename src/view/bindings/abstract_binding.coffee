@@ -41,7 +41,7 @@ class Batman.DOM.AbstractBinding extends Batman.Object
       self = this
       renderContext = @get('renderContext')
       if @filterFunctions.length > 0
-        Batman.developer.currentFilterStack = renderContext if DEBUG
+        Batman.developer.currentFilterStack = renderContext if BATMAN_DEBUG
 
         result = @filterFunctions.reduce((value, fn, i) ->
           # Get any argument keypaths from the context stored at parse time.
@@ -57,7 +57,7 @@ class Batman.DOM.AbstractBinding extends Batman.Object
           args.push self
           fn.apply(renderContext, args)
         , unfilteredValue)
-        Batman.developer.currentFilterStack = null if DEBUG
+        Batman.developer.currentFilterStack = null if BATMAN_DEBUG
         result
       else
         unfilteredValue
@@ -169,8 +169,8 @@ class Batman.DOM.AbstractBinding extends Batman.Object
     try
       key = @parseSegment(orig = filters.shift())[0]
     catch e
-      Batman.developer.warn e if DEBUG
-      Batman.developer.error "Error! Couldn't parse keypath in \"#{orig}\". Parsing error above." if DEBUG
+      Batman.developer.warn e if BATMAN_DEBUG
+      Batman.developer.error "Error! Couldn't parse keypath in \"#{orig}\". Parsing error above." if BATMAN_DEBUG
     if key and key._keypath
       @key = key._keypath
     else
@@ -187,7 +187,7 @@ class Batman.DOM.AbstractBinding extends Batman.Object
 
         # If the filter exists, grab it; otherwise, bail.
         unless filter = Batman.Filters[filterName]
-          return Batman.developer.error "Unrecognized filter '#{filterName}' in key \"#{@keyPath}\"!" if DEBUG
+          return Batman.developer.error "Unrecognized filter '#{filterName}' in key \"#{@keyPath}\"!" if BATMAN_DEBUG
 
         @filterFunctions.push filter
 
@@ -196,7 +196,7 @@ class Batman.DOM.AbstractBinding extends Batman.Object
         try
           @filterArguments.push @parseSegment(args)
         catch e
-          Batman.developer.error "Bad filter arguments \"#{args}\"!" if DEBUG
+          Batman.developer.error "Bad filter arguments \"#{args}\"!" if BATMAN_DEBUG
       true
 
   # Turn a piece of a `data` keypath into a usable javascript object.

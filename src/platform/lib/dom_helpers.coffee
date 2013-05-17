@@ -2,11 +2,11 @@ Batman.extend Batman.DOM,
   querySelectorAll: if window?.document?.querySelectorAll?
       (node, selector) -> node.querySelectorAll(selector)
     else
-      -> Batman.developer.error("Please include either jQuery or a querySelectorAll polyfill, or set Batman.DOM.querySelectorAll to return an empty array.") if DEBUG
+      -> Batman.developer.error("Please include either jQuery or a querySelectorAll polyfill, or set Batman.DOM.querySelectorAll to return an empty array.") if BATMAN_DEBUG
   querySelector: if window?.document?.querySelector?
       (node, selector) -> node.querySelector(selector)
     else
-      -> Batman.developer.error("Please include either jQuery or a querySelector polyfill, or set Batman.DOM.querySelector to an empty function.") if DEBUG
+      -> Batman.developer.error("Please include either jQuery or a querySelector polyfill, or set Batman.DOM.querySelector to an empty function.") if BATMAN_DEBUG
   setInnerHTML: (node, html) ->
     childNodes = (child for child in node.childNodes)
     Batman.DOM.willRemoveNode(child) for child in childNodes

@@ -7,7 +7,7 @@ class Batman.Renderer extends Batman.Object
   deferEvery: 50
   constructor: (@node, @context, @view) ->
     super()
-    if DEBUG
+    if BATMAN_DEBUG
       Batman.developer.error "Must pass a RenderContext to a renderer for rendering" unless @context instanceof Batman.RenderContext
     @immediate = Batman.setImmediate @start
 

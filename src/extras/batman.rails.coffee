@@ -45,7 +45,7 @@ Batman.mixin Batman.Encoders,
             minutesOffset = Batman.Encoders.railsDate.defaultTimezoneOffset
           return new Date(Date.UTC(obj[1], obj[2], obj[3], obj[4], obj[5] + minutesOffset, obj[6], obj[7]))
         else
-          Batman.developer.warn "Unrecognized rails date #{value}!" if DEBUG
+          Batman.developer.warn "Unrecognized rails date #{value}!" if BATMAN_DEBUG
           return Date.parse(value)
 
 class Batman.RailsStorage extends Batman.RestStorage

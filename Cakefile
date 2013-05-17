@@ -62,7 +62,7 @@ task 'build:node', 'compile node distribution of Batman.js', (options) ->
     files: './src/dist/*'
     options: options
     map:
-      'src/dist/batman\.node\.coffee' : (matches) -> debugger; muffin.compileTree(matches[0], 'lib/dist/batman.node.js', options).then ->
+      'src/dist/batman\.node\.coffee' : (matches) -> muffin.compileTree(matches[0], 'lib/dist/batman.node.js', options).then ->
         require('fs').appendFileSync( 'lib/dist/batman.node.js', 'const BATMAN_DEBUG=false;' )
 
 task 'build:dist', 'compile Batman.js files for distribution', (options) ->
@@ -103,7 +103,8 @@ task 'test', 'compile Batman.js and the tests and run them on the command line',
     files: glob.sync('./src/**/*.coffee').concat(glob.sync('./tests/**/*.coffee')).concat(glob.sync('./docs/**/*.coffee'))
     options: options
     map:
-      'src/dist/batman\.node\.coffee'            : (matches) -> muffin.compileTree(matches[0], 'lib/dist/batman.node.js', options)
+      'src/dist/batman\.node\.coffee'            : (matches) -> muffin.compileTree(matches[0], 'lib/dist/batman.node.js', options).then ->
+                                                                require('fs').appendFileSync( 'lib/dist/batman.node.js', 'const BATMAN_DEBUG=true;' )
       'tests/batman/(.+)_(test|helper).coffee'   : (matches) -> true
       'docs/percolate\.coffee'                   : (matches) -> muffin.compileScript(matches[0], 'docs/percolate.js', options)
       'tests/run.coffee'                         : (matches) -> muffin.compileScript(matches[0], 'tests/run.js', options)

@@ -66,5 +66,5 @@ test "removes if conditionals", ->
   equal transform(code), ""
 
 test "leaves no trace in the batman minified source", ->
-  code = CoffeeScript.compile(fs.readFileSync(path.join(__dirname, '..', '..', '..', 'src', 'developer.coffee')).toString())
+  code = CoffeeScript.compile(fs.readFileSync(path.join(__dirname, '..', '..', '..', 'src', 'developer.coffee')).toString()) + 'const BATMAN_DEBUG=false;'
   equal transform(code), "(function(){}).call(this);"

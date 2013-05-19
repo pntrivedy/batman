@@ -73,6 +73,15 @@ class Batman.Renderer extends Batman.Object
           [name, undefined, attribute.value]
 
       for [name, attr, value] in bindings.sort(@_sortBindings)
+        if name == 'set'
+          setValue = this.context.get(value)
+          if attr
+            node.setAttribute(attr, setValue)
+          else
+            node.textContent = setValue
+            skipChildren = true
+          break
+
         binding = if attr
           if reader = Batman.DOM.attrReaders[name]
             bindingDefinition = new Batman.DOM.AttrReaderBindingDefinition(node, attr, value, @context, this)

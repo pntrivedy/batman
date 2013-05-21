@@ -72,7 +72,8 @@ class Batman.DOM.IteratorBinding extends Batman.DOM.AbstractCollectionBinding
         @nodes.push node = @_newNodeForItem(newItem)
         fragment.appendChild(node)
 
-      @parentNode().insertBefore(fragment, @endNode)
+      Batman.setImmediate =>
+        @parentNode().insertBefore(fragment, @endNode)
 
     return
 

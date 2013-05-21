@@ -54,13 +54,12 @@ class Batman.DOM.IteratorBinding extends Batman.DOM.AbstractCollectionBinding
       @handleArrayChanged([])
 
   handleArrayChanged: (newItems) =>
+    oldNodes = @nodes
     if @nodes
       for node in @nodes
         if @_nodesToBeRendered.has(node)
           @_nodesToBeRemoved ||= new Batman.SimpleSet
           @_nodesToBeRemoved.add(node)
-        else
-          @_removeNode(node)
 
     @nodes = []
 
@@ -73,6 +72,7 @@ class Batman.DOM.IteratorBinding extends Batman.DOM.AbstractCollectionBinding
         fragment.appendChild(node)
 
       Batman.setImmediate =>
+        @_removeNode(node) for node in oldNodes if oldNodes
         @parentNode().insertBefore(fragment, @endNode)
 
     return

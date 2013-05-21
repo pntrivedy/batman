@@ -45,3 +45,4 @@
   });
 
 }).call(this);
+const BATMAN_DEBUG = true;

@@ -31,20 +31,18 @@ pipedExec = do ->
 
 task 'build', 'compile Batman.js and all the tools', (options) ->
   files = glob.sync('./src/**/*').concat(glob.sync('./tests/run.coffee'))
+  options.defines = { BATMAN_DEBUG: true }
   muffin.run
     files: files
     options: options
     map:
-      'src/batman\.coffee'            : (matches) -> muffin.compileTree(matches[0], 'lib/batman.js', options).then ->
-                                                       require('fs').appendFileSync( 'lib/batman.js', 'const BATMAN_DEBUG=true;' )
+      'src/batman\.coffee'            : (matches) -> muffin.compileTree(matches[0], 'lib/batman.js', options)
       'src/platform/([^/]+)\.coffee'  : (matches) -> muffin.compileTree(matches[0], "lib/batman.#{matches[1]}.js", options) unless matches[1] == 'node'
       'src/extras/(.+)\.coffee'       : (matches) -> muffin.compileTree(matches[0], "lib/extras/#{matches[1]}.js", options)
       'tests/run\.coffee'             : (matches) -> muffin.compileTree(matches[0], 'tests/run.js', options)
 
   invoke 'build:node'
   invoke 'build:tools'
-
-    
 
   if options.dist
     invoke 'build:dist'
@@ -58,14 +56,15 @@ task 'build:tools', 'compile command line batman tools and build transforms', (o
       'src/tools/(.+)\.coffee'        : (matches) -> muffin.compileScript(matches[0], "tools/#{matches[1]}.js", options)
 
 task 'build:node', 'compile node distribution of Batman.js', (options) ->
+  options.defines = { BATMAN_DEBUG: true }
   muffin.run
     files: './src/dist/*'
     options: options
     map:
-      'src/dist/batman\.node\.coffee' : (matches) -> muffin.compileTree(matches[0], 'lib/dist/batman.node.js', options).then ->
-        require('fs').appendFileSync( 'lib/dist/batman.node.js', 'const BATMAN_DEBUG=false;' )
+      'src/dist/batman\.node\.coffee' : (matches) -> muffin.compileTree(matches[0], 'lib/dist/batman.node.js', options)
 
 task 'build:dist', 'compile Batman.js files for distribution', (options) ->
+  options.defines = { BATMAN_DEBUG: false }
   temp    = require 'temp'
   tmpdir = temp.mkdirSync()
   distDir = "lib/dist"
@@ -81,7 +80,6 @@ task 'build:dist', 'compile Batman.js files for distribution', (options) ->
         return if matches[1] == 'batman.node'
         destination = "lib/dist/#{matches[1]}.js"
         muffin.compileTree(matches[0], destination).then ->
-          require('fs').appendFileSync( destination, 'const BATMAN_DEBUG=false;' )
           options.transform = developmentTransform
           muffin.minifyScript(destination, options).then ->
             muffin.notify(destination, "File #{destination} minified.")
@@ -99,12 +97,12 @@ task 'doc', 'build the Percolate documentation', (options) ->
         process.exit(code) unless options.watch
 
 task 'test', 'compile Batman.js and the tests and run them on the command line', (options) ->
+  options.defines = { BATMAN_DEBUG: true }
   muffin.run
     files: glob.sync('./src/**/*.coffee').concat(glob.sync('./tests/**/*.coffee')).concat(glob.sync('./docs/**/*.coffee'))
     options: options
     map:
-      'src/dist/batman\.node\.coffee'            : (matches) -> muffin.compileTree(matches[0], 'lib/dist/batman.node.js', options).then ->
-                                                                require('fs').appendFileSync( 'lib/dist/batman.node.js', 'const BATMAN_DEBUG=true;' )
+      'src/dist/batman\.node\.coffee'            : (matches) -> muffin.compileTree(matches[0], 'lib/dist/batman.node.js', options)
       'tests/batman/(.+)_(test|helper).coffee'   : (matches) -> true
       'docs/percolate\.coffee'                   : (matches) -> muffin.compileScript(matches[0], 'docs/percolate.js', options)
       'tests/run.coffee'                         : (matches) -> muffin.compileScript(matches[0], 'tests/run.js', options)

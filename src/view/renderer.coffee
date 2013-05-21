@@ -4,33 +4,21 @@
 # It is a continuation style parser, designed not to block for longer than 50ms at a time if the document
 # fragment is particularly long.
 class Batman.Renderer extends Batman.Object
-  deferEvery: 50
   constructor: (@node, @context, @view) ->
     super()
     Batman.developer.error "Must pass a RenderContext to a renderer for rendering" unless @context instanceof Batman.RenderContext
-    @immediate = Batman.setImmediate @start
 
   start: =>
-    @startTime = new Date
     @prevent 'parsed'
     @prevent 'rendered'
     @parseNode @node
 
-  resume: =>
-    @startTime = new Date
-    @parseNode @resumeNode
-
   finish: ->
-    @startTime = null
     @prevent 'stopped'
     @allowAndFire 'parsed'
     @allowAndFire 'rendered'
 
-  stop: ->
-    Batman.clearImmediate @immediate
-    @fire 'stopped'
-
-  for k in ['parsed', 'rendered', 'stopped']
+  for k in ['parsed', 'rendered']
     @::event(k).oneShot = true
 
   bindingRegexp = /^data\-(.*)/
@@ -57,11 +45,6 @@ class Batman.Renderer extends Batman.Object
       0
 
   parseNode: (node) ->
-    if @deferEvery && (new Date - @startTime) > @deferEvery
-      @resumeNode = node
-      @timeout = Batman.setImmediate @resume
-      return
-
     if node.getAttribute and node.attributes
       bindings = []
       for attribute in node.attributes

@@ -14,5 +14,5 @@ class Batman.DOM.DeferredRenderingBinding extends Batman.DOM.AbstractBinding
       @render()
 
   render: ->
-    new Batman.Renderer(@node, @renderContext, @renderer.view)
+    new Batman.AsyncRenderer(@node, @renderContext, @renderer.view)
     @rendered = true

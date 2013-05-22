@@ -29,7 +29,8 @@ Batman.DOM.attrReaders =
       else
         Batman.DOM.AttributeBinding
 
-    new bindingClass(definition)
+    bindingClass.initialize?(definition)
+    bindingClass.applyValueToNode(definition)
 
   context: (definition) ->
     definition.context.descendWithDefinition(definition)

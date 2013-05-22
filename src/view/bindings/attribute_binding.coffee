@@ -1,9 +1,9 @@
 #= require ./abstract_attribute_binding
 
-class Batman.DOM.AttributeBinding extends Batman.DOM.AbstractAttributeBinding
-  onlyObserve: Batman.BindingDefinitionOnlyObserve.Data
+Batman.DOM.AttributeBinding =
+  applyValueToNode: (definition) ->
+    definition.node.setAttribute(definition.attr, Batman.DOM.Binding.filteredValue(definition))
 
-  dataChange: (value) -> @node.setAttribute(@attributeName, value)
-  nodeChange: (node) ->
+  applyValueToModel: ->
     if @isTwoWay()
       @set 'filteredValue', Batman.DOM.attrReaders._parseAttribute(node.getAttribute(@attributeName))

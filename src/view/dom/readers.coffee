@@ -1,7 +1,7 @@
 #= require ./dom
 
-class Batman.DOM.ReaderBindingDefinition
-  constructor: (@node, @keyPath, @context, @renderer) ->
+Batman.DOM.ReaderBindingDefinition = (node, keyPath, context, renderer) ->
+  {node, keyPath, context, renderer}
 
 Batman.BindingDefinitionOnlyObserve =
   Data: 'data'
@@ -37,7 +37,8 @@ Batman.DOM.readers =
         bindingClass = Batman.DOM.SelectBinding
 
     bindingClass ||= Batman.DOM.ValueBinding
-    new bindingClass(definition)
+    # new bindingClass(definition)
+    bindingClass.applyValueToNode(definition)
 
   context: (definition) ->
     definition.context.descendWithDefinition(definition)

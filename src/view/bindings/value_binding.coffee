@@ -1,13 +1,17 @@
 #= require ./abstract_binding
 
-class Batman.DOM.ValueBinding extends Batman.DOM.AbstractBinding
-  constructor: (definition) ->
-    @isInputBinding = definition.node.nodeName.toLowerCase() in ['input', 'textarea']
-    super
+Batman.DOM.ValueBinding =
+  applyValueToNode: (definition) ->
+    Batman.DOM.valueForNode(definition.node, Batman.DOM.Binding.filteredValue(definition), definition.escapeValue ? true)
 
-  nodeChange: (node, context) ->
-    if @isTwoWay()
-      @set 'filteredValue', @node.value
+  applyValueToModel: ->
 
-  dataChange: (value, node) ->
-    Batman.DOM.valueForNode @node, value, @escapeValue
+
+
+  # constructor: (definition) ->
+  #   @isInputBinding = definition.node.nodeName.toLowerCase() in ['input', 'textarea']
+  #   super
+
+  # nodeChange: (node, context) ->
+  #   if @isTwoWay()
+  #     @set 'filteredValue', @node.value

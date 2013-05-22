@@ -1,7 +1,7 @@
 #= require ./dom
 
-class Batman.DOM.AttrReaderBindingDefinition
-  constructor: (@node, @attr, @keyPath, @context, @renderer) ->
+Batman.DOM.AttrReaderBindingDefinition = (node, attr, keyPath, context, renderer) ->
+  {node, attr, keyPath, context, renderer}
 
 # `Batman.DOM.attrReaders` contains all the DOM directives which take an argument in their name, in the
 # `data-dosomething-argument="keypath"` style. This means things like foreach, binding attributes like
@@ -38,11 +38,12 @@ Batman.DOM.attrReaders =
     new Batman.DOM.EventBinding(definition)
 
   addclass: (definition) ->
-    new Batman.DOM.AddClassBinding(definition)
+    Batman.DOM.AddClassBinding.initialize?(definition)
+    Batman.DOM.AddClassBinding.applyValueToNode(definition)
 
   removeclass: (definition) ->
     definition.invert = true
-    new Batman.DOM.AddClassBinding(definition)
+    Batman.DOM.attrReaders.addclass(definition)
 
   foreach: (definition) ->
     new Batman.DOM.IteratorBinding(definition)

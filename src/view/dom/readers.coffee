@@ -38,6 +38,7 @@ Batman.DOM.readers =
 
     bindingClass ||= Batman.DOM.ValueBinding
     # new bindingClass(definition)
+    bindingClass.initialize?(definition)
     bindingClass.applyValueToNode(definition)
 
   context: (definition) ->

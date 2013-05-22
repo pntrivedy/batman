@@ -76,6 +76,7 @@ class Batman.Renderer extends Batman.Object
         if attr
           if reader = Batman.DOM.attrReaders[name]
             bindingDefinition = Batman.DOM.AttrReaderBindingDefinition(node, attr, value, @context, this)
+            Batman.DOM.Binding.parseFilter(bindingDefinition)
             binding = reader(bindingDefinition)
         else
           if reader = Batman.DOM.readers[name]

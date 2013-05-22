@@ -1,22 +1,18 @@
 #= require ./abstract_attribute_binding
 
-class Batman.DOM.AddClassBinding extends Batman.DOM.AbstractAttributeBinding
-  onlyObserve: Batman.BindingDefinitionOnlyObserve.Data
-
-  constructor: (definition) ->
-    {@invert} = definition
-
-    @classes = for name in definition.attr.split('|')
+Batman.DOM.AddClassBinding =
+  initialize: (definition) ->
+    definition.classes = for name in definition.attr.split('|')
       {name: name, pattern: new RegExp("(?:^|\\s)#{name}(?:$|\\s)", 'i')}
 
-    super
+  applyValueToNode: (definition) ->
+    {node, classes, invert} = definition
+    currentName = node.className
+    value = Batman.DOM.Binding.filteredValue(definition)
 
-  dataChange: (value) ->
-    currentName = @node.className
-    for {name, pattern} in @classes
+    for {name, pattern} in classes
       includesClassName = pattern.test(currentName)
-      if !!value is !@invert
-        @node.className = "#{currentName} #{name}" if !includesClassName
+      if !!value is !invert
+        node.className = "#{currentName} #{name}" if !includesClassName
       else
-        @node.className = currentName.replace(pattern, ' ') if includesClassName
-    true
+        node.className = currentName.replace(pattern, ' ') if includesClassName

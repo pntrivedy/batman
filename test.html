@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="lib/coffee-script.js"></script>
+  <script src="lib/batman.js"></script>
+  <script src="lib/batman.solo.js"></script>
+
+  <style>
+  .error { background-color: red; }
+  </style>
+
+  <script type="text/coffeescript">
+    class window.App extends Batman.App
+    class App.User extends Batman.Object
+      @lawl: 'foooo'
+      @imTrue: true
+      @imFalse: false
+    App.run()
+  </script>
+</head>
+
+<body>
+  <input data-bind="User.lawl" />
+  <div data-addclass-error="User.imTrue">RED</div>
+  <div data-addclass-error="User.imFalse">NOT</div>
+  <div data-removeclass-error="User.imTrue">NOT</div>
+  <div data-removeclass-error="User.imFalse">RED</div>
+
+</body>
+</html>

@@ -102,10 +102,10 @@ class Batman.DOM.IteratorBinding extends Batman.DOM.AbstractCollectionBinding
   _replaceNodes: (newNodes, oldNodes) =>
     fragment = document.createDocumentFragment()
 
-    fragment.appendChild node for node in newNodes
-    @_removeNode node for node in oldNodes
+    fragment.appendChild node for node in newNodes?
+    @_removeNode node for node in oldNodes?
 
-    @parentNode().insertBefore(fragment, @endNode)
+    @parentNode().insertBefore(fragment, @endNode) if newNodes.length
 
   _removeNode: (node) ->
     Batman.DOM.destroyNode(node)

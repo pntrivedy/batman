@@ -1,17 +1,17 @@
 #= require ./abstract_binding
 
 Batman.DOM.ValueBinding =
-  initialize: (definition) ->
-    node = definition.node
+  initialize: (binding) ->
+    node = binding.node
     if Batman.DOM.nodeIsEditable(node)
-      callback = definition.changeCallback = Batman.DOM.ValueBinding.applyValueToModel.bind(null, definition)
+      callback = binding.changeCallback = Batman.DOM.ValueBinding.applyValueToModel.bind(null, binding)
       Batman.DOM.events.change(node, callback)
 
-  applyValueToNode: (definition) ->
-    Batman.DOM.valueForNode(definition.node, Batman.DOM.Binding.filteredValue(definition), definition.escapeValue ? true)
+  applyValueToNode: (binding) ->
+    Batman.DOM.valueForNode(binding.node, Batman.DOM.Binding.filteredValue(binding), binding.escapeValue ? true)
 
-  applyValueToModel: (definition) ->
-    Batman.DOM.Binding.setUnfilteredValue(definition, definition.node.value)
+  applyValueToModel: (binding) ->
+    Batman.DOM.Binding.setUnfilteredValue(binding, binding.node.value)
 
 
   # nodeChange: (node, context) ->

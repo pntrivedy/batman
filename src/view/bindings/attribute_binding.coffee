@@ -1,9 +1,8 @@
 #= require ./abstract_attribute_binding
 
 Batman.DOM.AttributeBinding =
-  applyValueToNode: (definition) ->
-    definition.node.setAttribute(definition.attr, Batman.DOM.Binding.filteredValue(definition))
+  applyValueToNode: (binding) ->
+    binding.node.setAttribute(binding.attr, Batman.DOM.Binding.filteredValue(binding))
 
-  applyValueToModel: ->
-    if @isTwoWay()
-      @set 'filteredValue', Batman.DOM.attrReaders._parseAttribute(node.getAttribute(@attributeName))
+  applyValueToModel: (binding) ->
+    Batman.DOM.setUnfilteredValue(Batman.DOM.attrReaders._parseAttribute(binding.node.getAttribute(binding.attr)))

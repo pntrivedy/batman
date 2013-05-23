@@ -20,14 +20,14 @@ Batman.DOM.readers =
     definition.onlyObserve = Batman.BindingDefinitionOnlyObserve.Data
     Batman.DOM.readers.bind(definition)
 
-  bind: (definition) ->
-    {node} = definition
+  bind: (binding) ->
+    {node} = binding
     switch node.nodeName.toLowerCase()
       when 'input'
         switch node.getAttribute('type')
           when 'checkbox'
-            definition.attr = 'checked'
-            Batman.DOM.attrReaders.bind(definition)
+            binding.attr = 'checked'
+            Batman.DOM.attrReaders.bind(binding)
             return true
           when 'radio'
             bindingClass = Batman.DOM.RadioBinding
@@ -36,10 +36,7 @@ Batman.DOM.readers =
       when 'select'
         bindingClass = Batman.DOM.SelectBinding
 
-    bindingClass ||= Batman.DOM.ValueBinding
-
-    bindingClass.initialize?(definition)
-    bindingClass.applyValueToNode(definition)
+    binding.bindingClass = bindingClass ||= Batman.DOM.ValueBinding
 
   context: (definition) ->
     definition.context.descendWithDefinition(definition)

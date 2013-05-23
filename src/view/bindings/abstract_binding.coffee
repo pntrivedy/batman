@@ -34,6 +34,11 @@ get_rx = /(?!^\s*)\[(.*?)\]/g
 # which uses filters has to be defined in terms of a new binding. This is so that the proper order of
 # objects is traversed and any observers are properly attached.
 Batman.DOM.Binding =
+  trackBinding: (definition) ->
+    context = @keyContext(definition)
+    context.observe definition.key, ->
+      definition.bindingClass?.applyValueToNode?(definition)
+
   filteredValue: (definition) ->
     {filterFunctions, filterArguments, context} = definition
     unfilteredValue = @unfilteredValue(definition)

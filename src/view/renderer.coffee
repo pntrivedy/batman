@@ -75,14 +75,21 @@ class Batman.Renderer extends Batman.Object
       for [name, attr, value] in bindings.sort(@_sortBindings)
         if attr
           if reader = Batman.DOM.attrReaders[name]
-            bindingDefinition = Batman.DOM.AttrReaderBindingDefinition(node, attr, value, @context, this)
-            Batman.DOM.Binding.parseFilter(bindingDefinition)
-            binding = reader(bindingDefinition)
+            binding = Batman.DOM.AttrReaderBindingDefinition(node, attr, value, @context, this)
         else
           if reader = Batman.DOM.readers[name]
-            bindingDefinition = Batman.DOM.ReaderBindingDefinition(node, value, @context, this)
-            Batman.DOM.Binding.parseFilter(bindingDefinition)
-            binding = reader(bindingDefinition)
+            binding = Batman.DOM.ReaderBindingDefinition(node, value, @context, this)
+
+        if binding
+          Batman.DOM.Binding.parseFilter(binding)
+
+          reader(binding)
+
+          binding.bindingClass.initialize?(binding)
+          binding.bindingClass.applyValueToNode?(binding)
+
+          Batman.DOM.Binding.trackBinding(binding)
+          # Batman.DOM.trackBinding(binding)
 
         if binding instanceof Batman.RenderContext
           oldContext = @context

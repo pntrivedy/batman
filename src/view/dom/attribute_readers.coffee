@@ -16,8 +16,8 @@ Batman.DOM.attrReaders =
     definition.onlyObserve = Batman.BindingDefinitionOnlyObserve.Data
     Batman.DOM.attrReaders.bind(definition)
 
-  bind: (definition) ->
-    bindingClass = switch definition.attr
+  bind: (binding) ->
+    binding.bindingClass = switch binding.attr
       when 'checked', 'disabled', 'selected'
         Batman.DOM.CheckedBinding
       when 'value', 'href', 'src', 'size'
@@ -29,22 +29,18 @@ Batman.DOM.attrReaders =
       else
         Batman.DOM.AttributeBinding
 
-    bindingClass.initialize?(definition)
-    bindingClass.applyValueToNode(definition)
-
   context: (definition) ->
     definition.context.descendWithDefinition(definition)
 
   event: (definition) ->
     new Batman.DOM.EventBinding(definition)
 
-  addclass: (definition) ->
-    Batman.DOM.AddClassBinding.initialize?(definition)
-    Batman.DOM.AddClassBinding.applyValueToNode(definition)
+  addclass: (binding) ->
+    binding.bindingClass = Batman.DOM.AddClassBinding
 
-  removeclass: (definition) ->
-    definition.invert = true
-    Batman.DOM.attrReaders.addclass(definition)
+  removeclass: (binding) ->
+    binding.invert = true
+    binding.bindingClass = Batman.DOM.AddClassBinding
 
   foreach: (definition) ->
     new Batman.DOM.IteratorBinding(definition)

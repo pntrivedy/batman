@@ -63,9 +63,22 @@ Batman.DOM.Binding =
 
   unfilteredValue: (definition) ->
     if key = definition.key
-      Batman.RenderContext.deProxy(Batman.get(definition.context.contextForKey(key), key))
+      Batman.RenderContext.deProxy(Batman.get(@keyContext(definition), key))
     else
       definition.value
+
+  setUnfilteredValue: (definition, value) ->
+    if key = definition.key
+      keyContext = @keyContext(definition)
+      # Supress sets on the window
+      if keyContext and keyContext != Batman.container
+        prop = Batman.Property.forBaseAndKey(keyContext, key)
+        prop.setValue(value)
+    else
+      definition.value = value
+
+  keyContext: (definition) ->
+    definition.keyContext ||= definition.context.contextForKey(definition.key)
 
   parseFilter: (definition) ->
     {keyPath} = definition
@@ -135,24 +148,6 @@ Batman.DOM.Binding =
 class Batman.DOM.AbstractBinding extends Batman.Object
 
 ###
-
-
-  # The `unfilteredValue` is whats evaluated each time any dependents change.
-  @accessor 'unfilteredValue',
-
-    set: (_, value) ->
-      if k = @get('key')
-        keyContext = @get('keyContext')
-        # Supress sets on the window
-        if keyContext and keyContext != Batman.container
-          prop = Batman.Property.forBaseAndKey(keyContext, k)
-          prop.setValue(value)
-      else
-        @set('value', value)
-
-
-  # The `keyContext` accessor is
-  @accessor 'keyContext', -> @renderContext.contextForKey(@key)
 
   onlyAll = Batman.BindingDefinitionOnlyObserve.All
   onlyData = Batman.BindingDefinitionOnlyObserve.Data

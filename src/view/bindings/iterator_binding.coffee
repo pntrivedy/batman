@@ -59,33 +59,32 @@ class Batman.DOM.IteratorBinding extends Batman.DOM.AbstractCollectionBinding
         if @_nodesToBeRendered.has(node)
           @_nodesToBeRemoved ||= new Batman.SimpleSet
           @_nodesToBeRemoved.add(node)
-        else
-          @_removeNode(node)
 
+    oldNodes = @nodes
     @nodes = []
 
     if newItems
-      fragment = document.createDocumentFragment()
+      childRenderTracker = new Batman.Object
+
+      childRenderTracker.once 'rendered', => @_replaceNodes(@nodes, oldNodes)
 
       for newItem, index in newItems
         @nodes ?= []
-        @nodes.push node = @_newNodeForItem(newItem)
-        fragment.appendChild(node)
-
-      @parentNode().insertBefore(fragment, @endNode)
+        @nodes.push node = @_newNodeForItem(newItem, childRenderTracker)
 
     return
 
   _itemForNode: (node) ->
     Batman._data(node, "#{@iteratorName}Item")
 
-  _newNodeForItem: (newItem) ->
+  _newNodeForItem: (newItem, childRenderTracker) ->
     newNode = @prototypeNode.cloneNode(true)
     @_nodesToBeRendered ||= new Batman.SimpleSet
     @_nodesToBeRendered.add(newNode)
 
     Batman._data(newNode, "#{@iteratorName}Item", newItem)
-    @parentRenderer.prevent 'rendered'
+    childRenderTracker.prevent 'rendered'
+
     renderer = new Batman.Renderer newNode, @renderContext.descend(newItem, @iteratorName), @parentRenderer.view
     renderer.once 'rendered', =>
       @_nodesToBeRendered.remove(newNode)
@@ -96,9 +95,17 @@ class Batman.DOM.IteratorBinding extends Batman.DOM.AbstractCollectionBinding
         Batman.DOM.propagateBindingEvents(newNode)
         @fire 'nodeAdded', newNode
 
-      @parentRenderer.allowAndFire 'rendered'
+      childRenderTracker.allowAndFire 'rendered'
 
     newNode
+
+  _replaceNodes: (newNodes, oldNodes) =>
+    fragment = document.createDocumentFragment()
+
+    fragment.appendChild node for node in newNodes
+    @_removeNode node for node in oldNodes
+
+    @parentNode().insertBefore(fragment, @endNode)
 
   _removeNode: (node) ->
     Batman.DOM.destroyNode(node)

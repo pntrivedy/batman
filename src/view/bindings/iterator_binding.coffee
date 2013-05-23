@@ -65,8 +65,11 @@ class Batman.DOM.IteratorBinding extends Batman.DOM.AbstractCollectionBinding
 
     if newItems
       childRenderTracker = new Batman.Object
+      @parentRenderer.prevent 'rendered'
 
-      childRenderTracker.once 'rendered', => @_replaceNodes(@nodes, oldNodes)
+      childRenderTracker.once 'rendered', =>
+        @_replaceNodes(@nodes, oldNodes)
+        @parentRenderer.allowAndFire 'rendered'
 
       for newItem, index in newItems
         @nodes ?= []
@@ -86,7 +89,7 @@ class Batman.DOM.IteratorBinding extends Batman.DOM.AbstractCollectionBinding
     childRenderTracker.prevent 'rendered'
 
     renderer = new Batman.Renderer newNode, @renderContext.descend(newItem, @iteratorName), @parentRenderer.view
-    renderer.once 'rendered', =>
+    renderer.once 'parsed', =>
       @_nodesToBeRendered.remove(newNode)
       if @_nodesToBeRemoved?.has(newNode)
         @_nodesToBeRemoved.remove(newNode)
@@ -102,8 +105,8 @@ class Batman.DOM.IteratorBinding extends Batman.DOM.AbstractCollectionBinding
   _replaceNodes: (newNodes, oldNodes) =>
     fragment = document.createDocumentFragment()
 
-    fragment.appendChild node for node in newNodes?
-    @_removeNode node for node in oldNodes?
+    fragment.appendChild node for node in newNodes if newNodes?
+    @_removeNode node for node in oldNodes if oldNodes?
 
     @parentNode().insertBefore(fragment, @endNode) if newNodes.length
 

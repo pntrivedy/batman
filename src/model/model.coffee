@@ -189,8 +189,11 @@ class Batman.Model extends Batman.Object
       if not (id = record.get('id'))?
         continue
       else if existing = @get('loaded.indexedBy.id').get(id)?.toArray()[0]
+        lifecycle = existing.get('lifecycle')
+        lifecycle.load()
         existing._withoutDirtyTracking ->
           @updateAttributes(record.get('attributes')?.toObject() || {})
+        lifecycle.loaded()
         records[index] = existing
       else
         newRecords.push record

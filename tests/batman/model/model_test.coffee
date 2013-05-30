@@ -191,6 +191,16 @@ asyncTest 'model will reload data from storage after clear', ->
       equal p.get('cost'), 20
       QUnit.start()
 
+asyncTest 'model will be in clean state after reload', ->
+  @Product.find 1, (e, p) =>
+    equal p.get('cost'), 10
+    p.set('cost', 20)
+    equal p.get('lifecycle.state'), 'dirty'
+
+    @Product.find 1, (e, p) =>
+      equal p.get('lifecycle.state'), 'clean'
+      QUnit.start()
+
 test "class promise accessors will be recalculated after clear", ->
   i = 0
   @Product.classAccessor 'promise', promise: (deliver) -> deliver(null, i++)
